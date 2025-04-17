@@ -1,0 +1,10 @@
+global using System.Diagnostics.CodeAnalysis;
+global using FluentAssertions;
+global using PBF.WorkNotes.Application.Factories;
+global using PBF.WorkNotes.Application.Factories.Interfaces;
+global using PBF.WorkNotes.Application.Providers;
+global using PBF.WorkNotes.Application.Providers.Interfaces;
+global using PBF.WorkNotes.Application.Settings;
+global using PBF.WorkNotes.Application.UseCases;
+global using PBF.WorkNotes.Application.UseCases.Interfaces;
+global using PBF.WorkNotes.Domain.Entities;

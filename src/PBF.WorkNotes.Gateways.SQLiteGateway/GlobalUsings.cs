@@ -1,0 +1,13 @@
+﻿global using System.Data;
+global using AutoMapper;
+global using Dapper;
+global using Microsoft.Data.Sqlite;
+global using Microsoft.Extensions.DependencyInjection;
+global using PBF.WorkNotes.Application.Providers;
+global using PBF.WorkNotes.Application.Providers.Interfaces;
+global using PBF.WorkNotes.Application.Repository.Interfaces;
+global using PBF.WorkNotes.Application.Settings;
+global using PBF.WorkNotes.Domain.Entities;
+global using PBF.WorkNotes.Gateways.SQLiteGateway.Helpers;
+global using PBF.WorkNotes.Gateways.SQLiteGateway.Models;
+global using PBF.WorkNotes.Gateways.SQLiteGateway.Repositories;
