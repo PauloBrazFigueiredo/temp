@@ -1,8 +1,7 @@
-﻿using PBF.WorkNotes.Application.Settings;
-
-namespace PBF.WorkNotes.Application.Tests.Providers;
+﻿namespace PBF.WorkNotes.Application.Tests.Providers;
 
 [ExcludeFromCodeCoverage]
+[Trait("Unit Tests", "Application")]
 public class SettingsProviderUnitTests
 {
     [Fact]

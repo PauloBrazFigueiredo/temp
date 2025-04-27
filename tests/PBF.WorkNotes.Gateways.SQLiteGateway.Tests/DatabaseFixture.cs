@@ -22,17 +22,17 @@ public class DatabaseFixture
             }
         };
         
-        //var a = new Migration_2025032201();
+        var a = new Migration_2025032201();
 
-        //var assembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == "PBF.WorkNotes.Gateways.SQLiteMigrator");
+        var assembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == "PBF.WorkNotes.Gateways.SQLiteMigrator");
 
-        //ServiceProvider = new ServiceCollection()
-        //    .AddFluentMigratorCore()
-        //    .AddAutoMapperProfiles()
-        //    .ConfigureRunner(rb => rb
-        //        .AddSQLite()
-        //        .WithGlobalConnectionString(SettingsProvider.GetWorkNotesDataDatabaseConnectionString())
-        //        .ScanIn(assembly).For.Migrations())
-        //        .BuildServiceProvider();
+        ServiceProvider = new ServiceCollection()
+            .AddFluentMigratorCore()
+            .AddAutoMapperProfiles()
+            .ConfigureRunner(rb => rb
+                .AddSQLite()
+                .WithGlobalConnectionString(SettingsProvider.GetWorkNotesDataDatabaseConnectionString())
+                .ScanIn(assembly).For.Migrations())
+                .BuildServiceProvider();
     }
 }

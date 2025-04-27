@@ -1,6 +1,7 @@
 ﻿namespace PBF.WorkNotes.Application.Tests.UseCases;
 
 [ExcludeFromCodeCoverage]
+[Trait("Unit Tests", "Application")]
 public class GetAllToDoStatesUseCaseUnitTests
 {
     [Fact]

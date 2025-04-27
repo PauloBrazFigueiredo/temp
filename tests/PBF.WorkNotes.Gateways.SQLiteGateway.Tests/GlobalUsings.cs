@@ -1,9 +1,13 @@
 global using System.Diagnostics.CodeAnalysis;
 global using AutoMapper;
+global using Dapper;
+global using FluentAssertions;
 global using Moq;
 global using PBF.WorkNotes.Application.Providers;
 global using PBF.WorkNotes.Application.Providers.Interfaces;
+global using PBF.WorkNotes.Application.Repository.Interfaces;
 global using PBF.WorkNotes.Application.Settings;
+global using PBF.WorkNotes.Domain.Entities;
 global using PBF.WorkNotes.Gateways.SQLiteGateway.Helpers;
 global using PBF.WorkNotes.Gateways.SQLiteGateway.Models;
 global using PBF.WorkNotes.Gateways.SQLiteGateway.Repositories;

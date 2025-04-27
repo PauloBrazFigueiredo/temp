@@ -1,8 +1,7 @@
-using Moq;
-
 namespace PBF.WorkNotes.Application.Tests.Factories;
 
 [ExcludeFromCodeCoverage]
+[Trait("Unit Tests", "Application")]
 public class ToDoFactoryUnitTests
 {
     [Fact]

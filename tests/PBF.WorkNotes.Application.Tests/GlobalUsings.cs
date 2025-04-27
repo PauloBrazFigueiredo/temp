@@ -1,5 +1,6 @@
 global using System.Diagnostics.CodeAnalysis;
 global using FluentAssertions;
+global using Moq;
 global using PBF.WorkNotes.Application.Factories;
 global using PBF.WorkNotes.Application.Factories.Interfaces;
 global using PBF.WorkNotes.Application.Providers;

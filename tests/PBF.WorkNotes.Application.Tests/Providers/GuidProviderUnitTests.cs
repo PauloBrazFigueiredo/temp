@@ -1,6 +1,7 @@
 ﻿namespace PBF.WorkNotes.Application.Tests.Providers;
 
 [ExcludeFromCodeCoverage]
+[Trait("Unit Tests", "Application")]
 public class GuidProviderUnitTests
 {
     [Fact]

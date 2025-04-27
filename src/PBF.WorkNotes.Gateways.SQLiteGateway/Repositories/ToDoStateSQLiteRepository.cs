@@ -2,13 +2,15 @@
 
 public  class ToDoStateSQLiteRepository : IToDoStateRepository
 {
-    private readonly IDatabaseAccess<ToDoStateModel> _databaseAccess;
+    private readonly IDatabaseAccess<ToDoStateModel, Guid> _databaseAccess;
     private readonly IMapper _mapper;
+    private readonly IGuidProvider _guidProvider;
 
-    public ToDoStateSQLiteRepository(IMapper mapper, IDatabaseAccess<ToDoStateModel> databaseAccess)
+    public ToDoStateSQLiteRepository(IMapper mapper, IGuidProvider guidProvider, IDatabaseAccess<ToDoStateModel, Guid> databaseAccess)
     {
-        _mapper = mapper;
-        _databaseAccess = databaseAccess;
+        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        _guidProvider = guidProvider ?? throw new ArgumentNullException(nameof(guidProvider));
+        _databaseAccess = databaseAccess ?? throw new ArgumentNullException(nameof(databaseAccess));
     }
 
     public async Task<IEnumerable<ToDoState>> GetAll()
@@ -34,37 +36,55 @@ public  class ToDoStateSQLiteRepository : IToDoStateRepository
             FROM ToDoState
             WHERE Id = @id
         """;
-        var model = await _databaseAccess.QuerySingleOrDefaultAsync(sql, new { id });
+        var parameters = new DynamicParameters();
+        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
+        var model = await _databaseAccess.QuerySingleOrDefaultAsync(sql, parameters);
+
         return _mapper.Map<ToDoState>(model);
     }
 
-    public async Task Create(ToDoState model)
+    public async Task<Guid> Create(ToDoState entity)
     {
-        var sql = """
+    var sql = """
             INSERT INTO ToDoState (Id, Name, IsDefault)
             VALUES (@Id, @Name, @IsDefault)
         """;
-        await _databaseAccess.ExecuteAsync(sql, model);
+        var model = _mapper.Map<ToDoStateModel>(entity);
+        var parameters = new DynamicParameters();
+        var id = _guidProvider.GetGuid();
+        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Output);
+        parameters.Add("Name", model.Name, DbType.String, ParameterDirection.Input);
+        parameters.Add("IsDefault", model.IsDefault, DbType.Boolean, ParameterDirection.Input);
+
+        return await _databaseAccess.InsertAndGetIdAsync(sql, parameters);
     }
 
-    public async Task Update(ToDoState model)
+    public async Task<int> Update(ToDoState entity)
     {
         var sql = """
             UPDATE ToDoState 
-            SET Id = @Id,
-                Name = @Name,
+            SET Name = @Name,
                 IsDefault = @IsDefault
             WHERE Id = @Id
         """;
-        await _databaseAccess.ExecuteAsync(sql, model);
+        var model = _mapper.Map<ToDoStateModel>(entity);
+        var parameters = new DynamicParameters();
+        parameters.Add("Id", model.Id, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Name", model.Name, DbType.String, ParameterDirection.Input);
+        parameters.Add("IsDefault", model.IsDefault, DbType.Boolean, ParameterDirection.Input);
+
+        return await _databaseAccess.ExecuteAsync(sql, parameters);
     }
 
-    public async Task Delete(int id)
+    public async Task<int> Delete(Guid id)
     {
         var sql = """
             DELETE FROM ToDoState 
-            WHERE Id = @id
+            WHERE Id = @Id
         """;
-        await _databaseAccess.ExecuteAsync(sql, new { id });
+        var parameters = new DynamicParameters();
+        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
+
+        return await _databaseAccess.ExecuteAsync(sql, parameters);
     }
 }
