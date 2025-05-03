@@ -2,265 +2,112 @@
 
 [ExcludeFromCodeCoverage]
 [Trait("Integration Tests", "Gateways")]
-[Collection("ToDoStateSQLiteRepository")]
-public class ToDoStateSQLiteRepositoryIntegrationTests
+[TestCaseOrderer("PBF.WorkNotes.Gateways.SQLiteGateway.Tests.Attributes.FactOrderer", "PBF.WorkNotes.Gateways.SQLiteGateway.Tests")]
+public class ToDoStateSQLiteRepositoryIntegrationTests :  IClassFixture<ToDoStateSQLiteRepositoryFixture>
 {
+    private readonly ToDoStateSQLiteRepositoryFixture _fixture;
+    //private const string DataSourcePrefix = "ToDoStateSQLiteRepository";
     private readonly IMapper _mapper;
     private readonly IGuidProvider _guidProvider;
 
-    public ToDoStateSQLiteRepositoryIntegrationTests()
+    public ToDoStateSQLiteRepositoryIntegrationTests(ToDoStateSQLiteRepositoryFixture fixture)
     {
-        var settingsProvider = CreateSettingsProvider();
-        var serviceProvider = CreateServiceProvider(settingsProvider);
-        UpdateDatabase(serviceProvider);
-        
-        var toDoStateRepository = serviceProvider.GetRequiredService<IToDoStateRepository>();
+        _fixture = fixture;
     }
 
-    private ISettingsProvider CreateSettingsProvider()
+    [Fact, FactOrder(1)]
+    public async Task ToDoStateSQLiteRepository_GetAll_SchouldReturnEntities()
     {
-        return new SettingsProvider
-        {
-            Settings = new AppSettings
-            {
-                ConnectionStrings = new List<ConnectionStringSettings>
-                {
-                    new ConnectionStringSettings
-                    {
-                        Name = "WorkNotesData",
-                        ConnectionString = "Data Source=:memory:"
-                    }
-                }
-            }
-        };
+        // Act
+        var result = await _fixture.SUT.GetAll();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<List<ToDoState>>();
+        result.Should().HaveCount(2);
+        result.Should().ContainSingle(entity => entity.Name == "Active");
+        result.Should().ContainSingle(entity => entity.Name == "Done");
     }
 
-    private IServiceProvider CreateServiceProvider(ISettingsProvider settingsProvider)
+    [Fact, FactOrder(2)]
+    public async Task ToDoStateSQLiteRepository_CreateValidEntity_SchouldReturnId()
     {
-        var a = new Migration_2025032201();
+        // Arrange
+        var entity = new ToDoState { IsDefault = true, Name = "testName" };
 
-        var assembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == "PBF.WorkNotes.Gateways.SQLiteMigrator");
+        // Act
+        var result = await _fixture.SUT.Create(entity);
+        _fixture.TestId = result;
 
-        return new ServiceCollection()
-            .AddFluentMigratorCore()
-            .AddAutoMapperProfiles()
-            .AddGuidProvider()
-            .AddSingleton<AppSettings>(settingsProvider.Settings)
-            .AddSQLiteGateway(settingsProvider)
-            .ConfigureRunner(rb => rb
-                .AddSQLite()
-                .WithGlobalConnectionString(settingsProvider.GetWorkNotesDataDatabaseConnectionString())
-                .ScanIn(assembly).For.Migrations())
-                .BuildServiceProvider();
+        // Assert
+        result.GetType().Should().Be(typeof(Guid));
+        result.Should().NotBe(Guid.Empty);
     }
 
-    private void UpdateDatabase(IServiceProvider serviceProvider)
+    [Fact, FactOrder(3)]
+    public async Task ToDoStateSQLiteRepository_GetByIdWithValidId_SchouldReturnEntity()
     {
-        var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
-        runner.MigrateUp();
+        // Act
+        var result = await _fixture.SUT.GetById(_fixture.TestId);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<ToDoState>();
     }
 
-    [Fact]
-    public void ToDoStateSQLiteRepository_GetAll_SchouldReturnEntities()
+    [Fact, FactOrder(4)]
+    public async Task ToDoStateSQLiteRepository_GetByIdWithInvalidId_SchouldReturnNull()
     {
-        //    // Arrange
-        //    var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel, Guid>>();
+        // Act
+        var result = await _fixture.SUT.GetById(Guid.Empty);
 
-        //    // Act
-        //    var sut = new ToDoStateSQLiteRepository(_mapper, _guidProvider, mockDatabaseAccess.Object);
-
-        //    // Assert
-        //    sut.Should().NotBeNull();
-        //    sut.Should().BeOfType<ToDoStateSQLiteRepository>();
-        //    sut.Should().BeAssignableTo<IToDoStateRepository>();
-        //}
-
-        //[Fact]
-        //public void ToDoStateSQLiteRepository_Constructor_WithNullMapper_SchouldThrowArgumentNullException()
-        //{
-        //    // Arrange
-        //    var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel, Guid>>();
-
-        //    // Act
-        //    Action action = () => new ToDoStateSQLiteRepository(null, _guidProvider, mockDatabaseAccess.Object);
-
-        //    // Assert
-        //    action.Should().Throw<ArgumentNullException>()
-        //        .WithMessage("Value cannot be null. (Parameter 'mapper')"); 
+        // Assert
+        result.Should().BeNull();
     }
 
-    //[Fact]
-    //public void ToDoStateSQLiteRepository_Constructor_WithNullGuidProvider_SchouldThrowArgumentNullException()
-    //{
-    //    // Arrange
-    //    var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel, Guid>>();
+    [Fact, FactOrder(3)]
+    public async Task ToDoStateSQLiteRepository_UpdateValidEntity_SchouldReturnTrue()
+    {
+        // Arrange
+        var entity = new ToDoState { Id =_fixture.TestId, IsDefault = true, Name = "testName1" };
 
-    //    // Act
-    //    Action action = () => new ToDoStateSQLiteRepository(_mapper, null, mockDatabaseAccess.Object);
+        // Act
+        var result = await _fixture.SUT.Update(entity);
 
-    //    // Assert
-    //    action.Should().Throw<ArgumentNullException>()
-    //        .WithMessage("Value cannot be null. (Parameter 'guidProvider')");
-    //}
+        // Assert
+        result.Should().BeTrue();
+    }
 
-    //[Fact]
-    //public void ToDoStateSQLiteRepository_Constructor_WithNullDatabaseAccess_SchouldThrowArgumentNullException()
-    //{
-    //    // Arrange
-    //    var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel, Guid>>();
+    [Fact, FactOrder(4)]
+    public async Task ToDoStateSQLiteRepository_UpdateValidEntity_SchouldReturnFalse()
+    {
+        // Arrange
+        var entity = new ToDoState { Id = Guid.Empty, IsDefault = true, Name = "testName1" };
 
-    //    // Act
-    //    Action action = () => new ToDoStateSQLiteRepository(_mapper, _guidProvider, null);
+        // Act
+        var result = await _fixture.SUT.Update(entity);
 
-    //    // Assert
-    //    action.Should().Throw<ArgumentNullException>()
-    //        .WithMessage("Value cannot be null. (Parameter 'databaseAccess')");
-    //}
+        // Assert
+        result.Should().BeFalse();
+    }
 
-    //[Fact]
-    //public async Task ToDoStateSQLiteRepository_GetAll()
-    //{
-    //    // Arrange
-    //    var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel, Guid>>();
-    //    mockDatabaseAccess.Setup(mock => mock.QueryAsync(It.IsAny<string>()))
-    //        .ReturnsAsync(new List<ToDoStateModel>());
-    //    var sut = new ToDoStateSQLiteRepository(_mapper, _guidProvider, mockDatabaseAccess.Object);
+    [Fact, FactOrder(5)]
+    public async Task ToDoStateSQLiteRepository_DeleteValidEntity_SchouldReturnTrue()
+    {
+        // Act
+        var result = await _fixture.SUT.Delete(_fixture.TestId);
 
-    //    // Act
-    //    var result = await sut.GetAll();
+        // Assert
+        result.Should().BeTrue();
+    }
 
-    //    // Assert
-    //    mockDatabaseAccess.Verify(mock => mock.QueryAsync("""
-    //        SELECT
-    //            Id,
-    //            Name,
-    //            IsDefault
-    //        FROM ToDoState
-    //    """), Times.Once);
-    //}
+    [Fact, FactOrder(6)]
+    public async Task ToDoStateSQLiteRepository_DeleteInvalidEntity_SchouldReturnFalse()
+    {
+        // Act
+        var result = await _fixture.SUT.Delete(_fixture.TestId);
 
-    //[Fact]
-    //public async Task ToDoStateSQLiteRepository_GetById()
-    //{
-    //    // Arrange
-    //    var id = Guid.NewGuid();
-
-    //    var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel, Guid>>();
-    //    mockDatabaseAccess.Setup(mock => mock.QuerySingleOrDefaultAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
-    //        .ReturnsAsync(new ToDoStateModel());
-    //    var sut = new ToDoStateSQLiteRepository(_mapper, _guidProvider, mockDatabaseAccess.Object);
-
-    //    // Act
-    //    var result = await sut.GetById(id);
-
-    //    // Assert
-    //    mockDatabaseAccess.Verify(mock => mock.QuerySingleOrDefaultAsync("""
-    //        SELECT
-    //            Id,
-    //            Name,
-    //            IsDefault
-    //        FROM ToDoState
-    //        WHERE Id = @id
-    //    """, 
-    //        It.Is<DynamicParameters>(p =>
-    //            p.Get<Guid>("Id") ==id)),
-    //        Times.Once);
-    //}
-
-    //[Fact]
-    //public async Task ToDoStateSQLiteRepository_Create()
-    //{
-    //    // Arrange
-    //    var id = Guid.NewGuid();
-    //    var entity = new ToDoState { IsDefault = true, Name = "test" };
-
-    //    var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel, Guid>>();
-    //    mockDatabaseAccess.Setup(mock => mock.QuerySingleOrDefaultAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
-    //        .ReturnsAsync(new ToDoStateModel());
-    //    var sut = new ToDoStateSQLiteRepository(_mapper, _guidProvider, mockDatabaseAccess.Object);
-
-    //    // Act
-    //    var result = await sut.Create(entity);
-
-    //    // Assert
-    //    mockDatabaseAccess.Verify(mock => mock.InsertAndGetIdAsync("""
-    //        INSERT INTO ToDoState (Id, Name, IsDefault)
-    //        VALUES (@Id, @Name, @IsDefault)
-    //    """,
-    //        It.Is<DynamicParameters>(p =>
-    //            p.Get<bool>("IsDefault") == entity.IsDefault
-    //            && p.Get<string>("Name") == entity.Name)),
-    //        Times.Once);
-    //}
-
-    //[Fact]
-    //public async Task ToDoStateSQLiteRepository_Update()
-    //{
-    //    // Arrange
-    //    var id = Guid.NewGuid();
-    //    var entity = new ToDoState { Id = id, IsDefault = true, Name = "test" };
-
-    //    var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel, Guid>>();
-    //    mockDatabaseAccess.Setup(mock => mock.ExecuteAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
-    //        .ReturnsAsync(1);
-    //    var sut = new ToDoStateSQLiteRepository(_mapper, _guidProvider, mockDatabaseAccess.Object);
-
-    //    // Act
-    //    var result = await sut.Update(entity);
-
-    //    // Assert
-    //    mockDatabaseAccess.Verify(mock => mock.ExecuteAsync("""
-    //        UPDATE ToDoState 
-    //        SET Name = @Name,
-    //            IsDefault = @IsDefault
-    //        WHERE Id = @Id
-    //    """,
-    //        It.Is<DynamicParameters>(p =>
-    //            p.Get<Guid>("Id") == entity.Id
-    //            &&  p.Get<bool>("IsDefault") == entity.IsDefault
-    //            && p.Get<string>("Name") == entity.Name)),
-    //        Times.Once);
-    //    result.Should().Be(1);
-    //}
-
-    //[Fact]
-    //public async Task ToDoStateSQLiteRepository_Delete()
-    //{
-    //    // Arrange
-    //    var id = Guid.NewGuid();
-
-    //    var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel, Guid>>();
-    //    mockDatabaseAccess.Setup(mock => mock.ExecuteAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
-    //        .ReturnsAsync(1);
-    //    var sut = new ToDoStateSQLiteRepository(_mapper, _guidProvider, mockDatabaseAccess.Object);
-
-    //    // Act
-    //    var result = await sut.Delete(id);
-
-    //    // Assert
-    //    mockDatabaseAccess.Verify(mock => mock.ExecuteAsync("""
-    //        DELETE FROM ToDoState 
-    //        WHERE Id = @Id
-    //    """,
-    //    It.Is<DynamicParameters>(p =>
-    //            p.Get<Guid>("Id") == id)),
-    //    Times.Once);
-    //    result.Should().Be(1);
-    //}
-
-    //private IMapper CreateMapper()
-    //{
-    //    var config = new MapperConfiguration(cfg =>
-    //    {
-    //        cfg.AddProfile<MappingProfile>();
-    //    });
-    //    return config.CreateMapper();
-    //}
-
-    //private IGuidProvider CreateGuidProvider()
-    //{
-    //    var mock = new Mock<IGuidProvider>();
-    //    mock.Setup(mock => mock.GetGuid()).Returns(Guid.NewGuid());
-    //    return mock.Object;
-    //}   
+        // Assert
+        result.Should().BeFalse();
+    }
 }

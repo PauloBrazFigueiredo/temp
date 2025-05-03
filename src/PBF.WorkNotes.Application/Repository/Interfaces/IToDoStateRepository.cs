@@ -5,6 +5,6 @@ public interface IToDoStateRepository
     Task<IEnumerable<ToDoState>> GetAll();
     Task<ToDoState> GetById(Guid id);
     Task<Guid> Create(ToDoState model);
-    Task<int> Update(ToDoState model);
-    Task<int> Delete(Guid id);
+    Task<bool> Update(ToDoState model);
+    Task<bool> Delete(Guid id);
 }

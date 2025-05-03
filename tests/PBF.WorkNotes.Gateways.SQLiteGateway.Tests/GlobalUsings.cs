@@ -1,3 +1,4 @@
+global using System.Data;
 global using System.Diagnostics.CodeAnalysis;
 global using AutoMapper;
 global using Dapper;
@@ -15,4 +16,8 @@ global using PBF.WorkNotes.Gateways.SQLiteGateway.Extensions;
 global using PBF.WorkNotes.Gateways.SQLiteGateway.Helpers;
 global using PBF.WorkNotes.Gateways.SQLiteGateway.Models;
 global using PBF.WorkNotes.Gateways.SQLiteGateway.Repositories;
+global using PBF.WorkNotes.Gateways.SQLiteGateway.Tests.Attributes;
+global using PBF.WorkNotes.Gateways.SQLiteGateway.Tests.Fixtures;
 global using PBF.WorkNotes.Gateways.SQLiteMigrator.Migrations;
+global using Xunit.Abstractions;
+global using Xunit.Sdk;

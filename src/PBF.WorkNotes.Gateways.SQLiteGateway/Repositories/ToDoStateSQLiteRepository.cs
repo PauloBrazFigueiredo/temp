@@ -2,11 +2,11 @@
 
 public  class ToDoStateSQLiteRepository : IToDoStateRepository
 {
-    private readonly IDatabaseAccess<ToDoStateModel, Guid> _databaseAccess;
+    private readonly IDatabaseAccess<ToDoStateModel> _databaseAccess;
     private readonly IMapper _mapper;
     private readonly IGuidProvider _guidProvider;
 
-    public ToDoStateSQLiteRepository(IMapper mapper, IGuidProvider guidProvider, IDatabaseAccess<ToDoStateModel, Guid> databaseAccess)
+    public ToDoStateSQLiteRepository(IMapper mapper, IGuidProvider guidProvider, IDatabaseAccess<ToDoStateModel> databaseAccess)
     {
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         _guidProvider = guidProvider ?? throw new ArgumentNullException(nameof(guidProvider));
@@ -34,7 +34,7 @@ public  class ToDoStateSQLiteRepository : IToDoStateRepository
                 Name,
                 IsDefault
             FROM ToDoState
-            WHERE Id = @id
+            WHERE Id = @Id
         """;
         var parameters = new DynamicParameters();
         parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
@@ -52,14 +52,15 @@ public  class ToDoStateSQLiteRepository : IToDoStateRepository
         var model = _mapper.Map<ToDoStateModel>(entity);
         var parameters = new DynamicParameters();
         var id = _guidProvider.GetGuid();
-        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Output);
+        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
         parameters.Add("Name", model.Name, DbType.String, ParameterDirection.Input);
         parameters.Add("IsDefault", model.IsDefault, DbType.Boolean, ParameterDirection.Input);
 
-        return await _databaseAccess.InsertAndGetIdAsync(sql, parameters);
+        await _databaseAccess.ExecuteAsync(sql, parameters);
+        return id;
     }
 
-    public async Task<int> Update(ToDoState entity)
+    public async Task<bool> Update(ToDoState entity)
     {
         var sql = """
             UPDATE ToDoState 
@@ -69,14 +70,15 @@ public  class ToDoStateSQLiteRepository : IToDoStateRepository
         """;
         var model = _mapper.Map<ToDoStateModel>(entity);
         var parameters = new DynamicParameters();
-        parameters.Add("Id", model.Id, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", entity.Id, DbType.Guid, ParameterDirection.Input);
         parameters.Add("Name", model.Name, DbType.String, ParameterDirection.Input);
         parameters.Add("IsDefault", model.IsDefault, DbType.Boolean, ParameterDirection.Input);
 
-        return await _databaseAccess.ExecuteAsync(sql, parameters);
+        var result = await _databaseAccess.ExecuteAsync(sql, parameters);
+        return result == 1;
     }
 
-    public async Task<int> Delete(Guid id)
+    public async Task<bool> Delete(Guid id)
     {
         var sql = """
             DELETE FROM ToDoState 
@@ -85,6 +87,7 @@ public  class ToDoStateSQLiteRepository : IToDoStateRepository
         var parameters = new DynamicParameters();
         parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
 
-        return await _databaseAccess.ExecuteAsync(sql, parameters);
+        var result = await _databaseAccess.ExecuteAsync(sql, parameters);
+        return result == 1;
     }
 }

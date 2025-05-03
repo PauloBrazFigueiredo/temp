@@ -1,15 +1,16 @@
 ﻿namespace PBF.WorkNotes.Gateways.SQLiteGateway.Helpers;
 
-public interface IDatabaseAccess<T, K>
+public interface IDatabaseAccess<M> : IDisposable
 {
     IDbConnection OpenConnection();
-    Task<IEnumerable<T>> QueryAsync(string sql);
-    Task<T?> QuerySingleOrDefaultAsync(string sql, DynamicParameters parameters);
-    Task<K> InsertAndGetIdAsync(string sql, DynamicParameters parameters);
+    void CloseConnection();
+    Task<IEnumerable<M>> QueryAsync(string sql);
+    Task<M?> QuerySingleOrDefaultAsync(string sql, DynamicParameters parameters);
+    Task<Guid> InsertAndGetIdAsync(string sql, DynamicParameters parameters);
     Task<int> ExecuteAsync(string sql, DynamicParameters parameters);
 }
 
-public  class SQLiteDatabaseAccess<T, K>: IDatabaseAccess<T, K>, IDisposable
+public  class SQLiteDatabaseAccess<M>: IDatabaseAccess<M>
 {
     private readonly AppSettings _settings;
     private IDbConnection _connection;
@@ -35,24 +36,33 @@ public  class SQLiteDatabaseAccess<T, K>: IDatabaseAccess<T, K>, IDisposable
         return _connection;
     }
 
-    public async Task<IEnumerable<T>> QueryAsync(string sql)
+    public void CloseConnection()
     {
-        _connection = OpenConnection();
-        return await _connection.QueryAsync<T>(sql);
+        if (_connection is not null && _connection.State != ConnectionState.Closed)
+        {
+            _connection.Close();
+        }
+        _connection.Dispose();
     }
 
-    public async Task<T?> QuerySingleOrDefaultAsync(string sql, DynamicParameters parameters)
+    public async Task<IEnumerable<M>> QueryAsync(string sql)
     {
         _connection = OpenConnection();
-        return await _connection.QuerySingleOrDefaultAsync<T>(sql, parameters);
+        return await _connection.QueryAsync<M>(sql);
     }
 
-    public async Task<K> InsertAndGetIdAsync(string sql, DynamicParameters parameters)
+    public async Task<M?> QuerySingleOrDefaultAsync(string sql, DynamicParameters parameters)
     {
-        var query = $"{sql}; SELECT last_insert_rowid();";
         _connection = OpenConnection();
-        var id = await _connection.QuerySingleAsync<K>(query, parameters);
-        return id;
+        return await _connection.QuerySingleOrDefaultAsync<M>(sql, parameters);
+    }
+
+    public async Task<Guid> InsertAndGetIdAsync(string sql, DynamicParameters parameters)
+    {
+        var query = $"{sql};";
+        _connection = OpenConnection();
+        await _connection.QuerySingleAsync(query, parameters);
+        return Guid.Parse(parameters.Get<string>("@Id"));
     }
 
     public async Task<int> ExecuteAsync(string sql, DynamicParameters parameters)
@@ -63,10 +73,7 @@ public  class SQLiteDatabaseAccess<T, K>: IDatabaseAccess<T, K>, IDisposable
 
     public void Dispose()
     {
-        if (_connection.State != ConnectionState.Closed)
-        {
-            _connection.Close();
-        }
-        _connection.Dispose();
+        CloseConnection();
+        _connection?.Dispose();
     }
 }

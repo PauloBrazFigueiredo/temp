@@ -6,7 +6,7 @@ public static class SQLiteGatewayExtensions
     {
         services.AddTransient<SqliteConnection>(_ => new SqliteConnection(settingsProvider.GetWorkNotesDataDatabaseConnectionString()));
 
-        services.AddTransient<IDatabaseAccess<ToDoStateModel, Guid>, SQLiteDatabaseAccess<ToDoStateModel, Guid>>();
+        services.AddTransient<IDatabaseAccess<ToDoStateModel>, SQLiteDatabaseAccess<ToDoStateModel>>();
 
         services.AddTransient<IToDoStateRepository, ToDoStateSQLiteRepository>();
 
