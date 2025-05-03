@@ -23,9 +23,6 @@ static ServiceProvider CreateServices(ISettingsProvider settingsProvider)
 
 static void UpdateDatabase(IServiceProvider serviceProvider)
 {
-    // Instantiate the runner
     var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
-
-    // Execute the migrations
     runner.MigrateUp();
 }

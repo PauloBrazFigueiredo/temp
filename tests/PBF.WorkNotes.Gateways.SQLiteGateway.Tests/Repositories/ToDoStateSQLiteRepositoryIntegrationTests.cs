@@ -2,6 +2,7 @@
 
 [ExcludeFromCodeCoverage]
 [Trait("Integration Tests", "Gateways")]
+[Collection("ToDoStateSQLiteRepository")]
 public class ToDoStateSQLiteRepositoryIntegrationTests
 {
     private readonly IMapper _mapper;
@@ -9,38 +10,84 @@ public class ToDoStateSQLiteRepositoryIntegrationTests
 
     public ToDoStateSQLiteRepositoryIntegrationTests()
     {
-        //_mapper = CreateMapper();
-        //_guidProvider = CreateGuidProvider();
+        var settingsProvider = CreateSettingsProvider();
+        var serviceProvider = CreateServiceProvider(settingsProvider);
+        UpdateDatabase(serviceProvider);
+        
+        var toDoStateRepository = serviceProvider.GetRequiredService<IToDoStateRepository>();
     }
 
-    //[Fact]
-    //public void ToDoStateSQLiteRepository_Constructor_SchouldCreateInstance()
-    //{
-    //    // Arrange
-    //    var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel, Guid>>();
+    private ISettingsProvider CreateSettingsProvider()
+    {
+        return new SettingsProvider
+        {
+            Settings = new AppSettings
+            {
+                ConnectionStrings = new List<ConnectionStringSettings>
+                {
+                    new ConnectionStringSettings
+                    {
+                        Name = "WorkNotesData",
+                        ConnectionString = "Data Source=:memory:"
+                    }
+                }
+            }
+        };
+    }
 
-    //    // Act
-    //    var sut = new ToDoStateSQLiteRepository(_mapper, _guidProvider, mockDatabaseAccess.Object);
+    private IServiceProvider CreateServiceProvider(ISettingsProvider settingsProvider)
+    {
+        var a = new Migration_2025032201();
 
-    //    // Assert
-    //    sut.Should().NotBeNull();
-    //    sut.Should().BeOfType<ToDoStateSQLiteRepository>();
-    //    sut.Should().BeAssignableTo<IToDoStateRepository>();
-    //}
+        var assembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == "PBF.WorkNotes.Gateways.SQLiteMigrator");
 
-    //[Fact]
-    //public void ToDoStateSQLiteRepository_Constructor_WithNullMapper_SchouldThrowArgumentNullException()
-    //{
-    //    // Arrange
-    //    var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel, Guid>>();
+        return new ServiceCollection()
+            .AddFluentMigratorCore()
+            .AddAutoMapperProfiles()
+            .AddGuidProvider()
+            .AddSingleton<AppSettings>(settingsProvider.Settings)
+            .AddSQLiteGateway(settingsProvider)
+            .ConfigureRunner(rb => rb
+                .AddSQLite()
+                .WithGlobalConnectionString(settingsProvider.GetWorkNotesDataDatabaseConnectionString())
+                .ScanIn(assembly).For.Migrations())
+                .BuildServiceProvider();
+    }
 
-    //    // Act
-    //    Action action = () => new ToDoStateSQLiteRepository(null, _guidProvider, mockDatabaseAccess.Object);
+    private void UpdateDatabase(IServiceProvider serviceProvider)
+    {
+        var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
+        runner.MigrateUp();
+    }
 
-    //    // Assert
-    //    action.Should().Throw<ArgumentNullException>()
-    //        .WithMessage("Value cannot be null. (Parameter 'mapper')"); 
-    //}
+    [Fact]
+    public void ToDoStateSQLiteRepository_GetAll_SchouldReturnEntities()
+    {
+        //    // Arrange
+        //    var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel, Guid>>();
+
+        //    // Act
+        //    var sut = new ToDoStateSQLiteRepository(_mapper, _guidProvider, mockDatabaseAccess.Object);
+
+        //    // Assert
+        //    sut.Should().NotBeNull();
+        //    sut.Should().BeOfType<ToDoStateSQLiteRepository>();
+        //    sut.Should().BeAssignableTo<IToDoStateRepository>();
+        //}
+
+        //[Fact]
+        //public void ToDoStateSQLiteRepository_Constructor_WithNullMapper_SchouldThrowArgumentNullException()
+        //{
+        //    // Arrange
+        //    var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel, Guid>>();
+
+        //    // Act
+        //    Action action = () => new ToDoStateSQLiteRepository(null, _guidProvider, mockDatabaseAccess.Object);
+
+        //    // Assert
+        //    action.Should().Throw<ArgumentNullException>()
+        //        .WithMessage("Value cannot be null. (Parameter 'mapper')"); 
+    }
 
     //[Fact]
     //public void ToDoStateSQLiteRepository_Constructor_WithNullGuidProvider_SchouldThrowArgumentNullException()
