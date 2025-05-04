@@ -20,54 +20,12 @@ public class ToDoStateSQLiteRepositoryUnitTests
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
 
         // Act
-        var sut = new ToDoStateSQLiteRepository(_mapper, _guidProvider, mockDatabaseAccess.Object);
+        var sut = new ToDoStateSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Assert
         sut.Should().NotBeNull();
         sut.Should().BeOfType<ToDoStateSQLiteRepository>();
         sut.Should().BeAssignableTo<IToDoStateRepository>();
-    }
-
-    [Fact]
-    public void ToDoStateSQLiteRepository_Constructor_WithNullMapper_SchouldThrowArgumentNullException()
-    {
-        // Arrange
-        var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
-
-        // Act
-        Action action = () => new ToDoStateSQLiteRepository(null, _guidProvider, mockDatabaseAccess.Object);
-
-        // Assert
-        action.Should().Throw<ArgumentNullException>()
-            .WithMessage("Value cannot be null. (Parameter 'mapper')"); 
-    }
-
-    [Fact]
-    public void ToDoStateSQLiteRepository_Constructor_WithNullGuidProvider_SchouldThrowArgumentNullException()
-    {
-        // Arrange
-        var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
-
-        // Act
-        Action action = () => new ToDoStateSQLiteRepository(_mapper, null, mockDatabaseAccess.Object);
-
-        // Assert
-        action.Should().Throw<ArgumentNullException>()
-            .WithMessage("Value cannot be null. (Parameter 'guidProvider')");
-    }
-
-    [Fact]
-    public void ToDoStateSQLiteRepository_Constructor_WithNullDatabaseAccess_SchouldThrowArgumentNullException()
-    {
-        // Arrange
-        var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
-
-        // Act
-        Action action = () => new ToDoStateSQLiteRepository(_mapper, _guidProvider, null);
-
-        // Assert
-        action.Should().Throw<ArgumentNullException>()
-            .WithMessage("Value cannot be null. (Parameter 'databaseAccess')");
     }
 
     [Fact]
@@ -77,7 +35,7 @@ public class ToDoStateSQLiteRepositoryUnitTests
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.QueryAsync(It.IsAny<string>()))
             .ReturnsAsync(new List<ToDoStateModel>());
-        var sut = new ToDoStateSQLiteRepository(_mapper, _guidProvider, mockDatabaseAccess.Object);
+        var sut = new ToDoStateSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.GetAll();
@@ -101,7 +59,7 @@ public class ToDoStateSQLiteRepositoryUnitTests
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.QuerySingleOrDefaultAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
             .ReturnsAsync(new ToDoStateModel());
-        var sut = new ToDoStateSQLiteRepository(_mapper, _guidProvider, mockDatabaseAccess.Object);
+        var sut = new ToDoStateSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.GetById(id);
@@ -130,7 +88,7 @@ public class ToDoStateSQLiteRepositoryUnitTests
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.QuerySingleOrDefaultAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
             .ReturnsAsync((ToDoStateModel)null);
-        var sut = new ToDoStateSQLiteRepository(_mapper, _guidProvider, mockDatabaseAccess.Object);
+        var sut = new ToDoStateSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.GetById(id);
@@ -160,7 +118,7 @@ public class ToDoStateSQLiteRepositoryUnitTests
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.ExecuteAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
             .ReturnsAsync(1);
-        var sut = new ToDoStateSQLiteRepository(_mapper, _guidProvider, mockDatabaseAccess.Object);
+        var sut = new ToDoStateSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.Create(entity);
@@ -186,7 +144,7 @@ public class ToDoStateSQLiteRepositoryUnitTests
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.ExecuteAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
             .ReturnsAsync(1);
-        var sut = new ToDoStateSQLiteRepository(_mapper, _guidProvider, mockDatabaseAccess.Object);
+        var sut = new ToDoStateSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.Update(entity);
@@ -216,7 +174,7 @@ public class ToDoStateSQLiteRepositoryUnitTests
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.ExecuteAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
             .ReturnsAsync(0);
-        var sut = new ToDoStateSQLiteRepository(_mapper, _guidProvider, mockDatabaseAccess.Object);
+        var sut = new ToDoStateSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.Update(entity);
@@ -245,7 +203,7 @@ public class ToDoStateSQLiteRepositoryUnitTests
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.ExecuteAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
             .ReturnsAsync(1);
-        var sut = new ToDoStateSQLiteRepository(_mapper, _guidProvider, mockDatabaseAccess.Object);
+        var sut = new ToDoStateSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.Delete(id);
@@ -270,7 +228,7 @@ public class ToDoStateSQLiteRepositoryUnitTests
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.ExecuteAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
             .ReturnsAsync(0);
-        var sut = new ToDoStateSQLiteRepository(_mapper, _guidProvider, mockDatabaseAccess.Object);
+        var sut = new ToDoStateSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.Delete(id);

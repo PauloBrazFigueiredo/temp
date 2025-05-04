@@ -1,18 +1,11 @@
 ﻿namespace PBF.WorkNotes.Gateways.SQLiteGateway.Repositories;
 
-public  class ToDoStateSQLiteRepository : IToDoStateRepository
+public  class ToDoStateSQLiteRepository(
+    IDatabaseAccess<ToDoStateModel> databaseAccess,
+    IMapper mapper,
+    IGuidProvider guidProvider
+    ) : IToDoStateRepository
 {
-    private readonly IDatabaseAccess<ToDoStateModel> _databaseAccess;
-    private readonly IMapper _mapper;
-    private readonly IGuidProvider _guidProvider;
-
-    public ToDoStateSQLiteRepository(IMapper mapper, IGuidProvider guidProvider, IDatabaseAccess<ToDoStateModel> databaseAccess)
-    {
-        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        _guidProvider = guidProvider ?? throw new ArgumentNullException(nameof(guidProvider));
-        _databaseAccess = databaseAccess ?? throw new ArgumentNullException(nameof(databaseAccess));
-    }
-
     public async Task<IEnumerable<ToDoState>> GetAll()
     {
         var sql = """
@@ -22,8 +15,8 @@ public  class ToDoStateSQLiteRepository : IToDoStateRepository
                 IsDefault
             FROM ToDoState
         """;
-        var models = await _databaseAccess.QueryAsync(sql);
-        return _mapper.Map<IEnumerable<ToDoState>>(models);
+        var models = await databaseAccess.QueryAsync(sql);
+        return mapper.Map<IEnumerable<ToDoState>>(models);
     }
 
     public async Task<ToDoState> GetById(Guid id)
@@ -38,9 +31,9 @@ public  class ToDoStateSQLiteRepository : IToDoStateRepository
         """;
         var parameters = new DynamicParameters();
         parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
-        var model = await _databaseAccess.QuerySingleOrDefaultAsync(sql, parameters);
+        var model = await databaseAccess.QuerySingleOrDefaultAsync(sql, parameters);
 
-        return _mapper.Map<ToDoState>(model);
+        return mapper.Map<ToDoState>(model);
     }
 
     public async Task<Guid> Create(ToDoState entity)
@@ -49,14 +42,14 @@ public  class ToDoStateSQLiteRepository : IToDoStateRepository
             INSERT INTO ToDoState (Id, Name, IsDefault)
             VALUES (@Id, @Name, @IsDefault)
         """;
-        var model = _mapper.Map<ToDoStateModel>(entity);
+        var model = mapper.Map<ToDoStateModel>(entity);
         var parameters = new DynamicParameters();
-        var id = _guidProvider.GetGuid();
+        var id = guidProvider.GetGuid();
         parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
         parameters.Add("Name", model.Name, DbType.String, ParameterDirection.Input);
         parameters.Add("IsDefault", model.IsDefault, DbType.Boolean, ParameterDirection.Input);
 
-        await _databaseAccess.ExecuteAsync(sql, parameters);
+        await databaseAccess.ExecuteAsync(sql, parameters);
         return id;
     }
 
@@ -68,13 +61,13 @@ public  class ToDoStateSQLiteRepository : IToDoStateRepository
                 IsDefault = @IsDefault
             WHERE Id = @Id
         """;
-        var model = _mapper.Map<ToDoStateModel>(entity);
+        var model = mapper.Map<ToDoStateModel>(entity);
         var parameters = new DynamicParameters();
         parameters.Add("Id", entity.Id, DbType.Guid, ParameterDirection.Input);
         parameters.Add("Name", model.Name, DbType.String, ParameterDirection.Input);
         parameters.Add("IsDefault", model.IsDefault, DbType.Boolean, ParameterDirection.Input);
 
-        var result = await _databaseAccess.ExecuteAsync(sql, parameters);
+        var result = await databaseAccess.ExecuteAsync(sql, parameters);
         return result == 1;
     }
 
@@ -87,7 +80,7 @@ public  class ToDoStateSQLiteRepository : IToDoStateRepository
         var parameters = new DynamicParameters();
         parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
 
-        var result = await _databaseAccess.ExecuteAsync(sql, parameters);
+        var result = await databaseAccess.ExecuteAsync(sql, parameters);
         return result == 1;
     }
 }
