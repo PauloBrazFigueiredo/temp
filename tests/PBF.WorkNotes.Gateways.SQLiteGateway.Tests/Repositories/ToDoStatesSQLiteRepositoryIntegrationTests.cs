@@ -6,8 +6,6 @@
 public class ToDoStatesSQLiteRepositoryIntegrationTests :  IClassFixture<ToDoStatesSQLiteRepositoryFixture>
 {
     private readonly ToDoStatesSQLiteRepositoryFixture _fixture;
-    private readonly IMapper _mapper;
-    private readonly IGuidProvider _guidProvider;
 
     public ToDoStatesSQLiteRepositoryIntegrationTests(ToDoStatesSQLiteRepositoryFixture fixture)
     {

@@ -2,7 +2,7 @@
 
 [ExcludeFromCodeCoverage]
 [Trait("Unit Tests", "Gateways")]
-public class ToDoStatesSQLiteRepositoryUnitTests
+public class ToDoStatesSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
 {
     private readonly IMapper _mapper;
     private readonly IGuidProvider _guidProvider;
@@ -243,20 +243,4 @@ public class ToDoStatesSQLiteRepositoryUnitTests
         Times.Once);
         result.Should().BeFalse();
     }
-
-    private IMapper CreateMapper()
-    {
-        var config = new MapperConfiguration(cfg =>
-        {
-            cfg.AddProfile<MappingProfile>();
-        });
-        return config.CreateMapper();
-    }
-
-    private IGuidProvider CreateGuidProvider()
-    {
-        var mock = new Mock<IGuidProvider>();
-        mock.Setup(mock => mock.GetGuid()).Returns(Guid.NewGuid());
-        return mock.Object;
-    }   
 }

@@ -6,8 +6,6 @@
 public class TagsSQLiteRepositoryIntegrationTests :  IClassFixture<TagsSQLiteRepositoryFixture>
 {
     private readonly TagsSQLiteRepositoryFixture _fixture;
-    private readonly IMapper _mapper;
-    private readonly IGuidProvider _guidProvider;
 
     public TagsSQLiteRepositoryIntegrationTests(TagsSQLiteRepositoryFixture fixture)
     {
