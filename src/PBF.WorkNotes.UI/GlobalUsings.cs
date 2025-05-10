@@ -4,7 +4,7 @@ global using AutoMapper;
 global using Microsoft.Extensions.DependencyInjection;
 global using PBF.WorkNotes.Application.Providers;
 global using PBF.WorkNotes.Application.Providers.Interfaces;
-global using PBF.WorkNotes.Application.Repository.Interfaces;
+global using PBF.WorkNotes.Application.Repositories.Interfaces;
 global using PBF.WorkNotes.Gateways.SQLiteGateway.Extensions;
 global using PBF.WorkNotes.Gateways.SQLiteGateway.Helpers;
 global using PBF.WorkNotes.UI.Extensions;

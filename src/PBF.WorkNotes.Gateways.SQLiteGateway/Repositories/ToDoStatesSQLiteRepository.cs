@@ -1,10 +1,10 @@
 ﻿namespace PBF.WorkNotes.Gateways.SQLiteGateway.Repositories;
 
-public  class ToDoStateSQLiteRepository(
+public  class ToDoStatesSQLiteRepository(
     IDatabaseAccess<ToDoStateModel> databaseAccess,
     IMapper mapper,
     IGuidProvider guidProvider
-    ) : IToDoStateRepository
+    ) : IToDoStatesRepository
 {
     public async Task<IEnumerable<ToDoState>> GetAll()
     {
@@ -13,7 +13,7 @@ public  class ToDoStateSQLiteRepository(
                 Id,
                 Name,
                 IsDefault
-            FROM ToDoState
+            FROM ToDoStates
         """;
         var models = await databaseAccess.QueryAsync(sql);
         return mapper.Map<IEnumerable<ToDoState>>(models);
@@ -26,7 +26,7 @@ public  class ToDoStateSQLiteRepository(
                 Id,
                 Name,
                 IsDefault
-            FROM ToDoState
+            FROM ToDoStates
             WHERE Id = @Id
         """;
         var parameters = new DynamicParameters();
@@ -39,7 +39,7 @@ public  class ToDoStateSQLiteRepository(
     public async Task<Guid> Create(ToDoState entity)
     {
     var sql = """
-            INSERT INTO ToDoState (Id, Name, IsDefault)
+            INSERT INTO ToDoStates (Id, Name, IsDefault)
             VALUES (@Id, @Name, @IsDefault)
         """;
         var model = mapper.Map<ToDoStateModel>(entity);
@@ -56,7 +56,7 @@ public  class ToDoStateSQLiteRepository(
     public async Task<bool> Update(ToDoState entity)
     {
         var sql = """
-            UPDATE ToDoState 
+            UPDATE ToDoStates
             SET Name = @Name,
                 IsDefault = @IsDefault
             WHERE Id = @Id
@@ -74,7 +74,7 @@ public  class ToDoStateSQLiteRepository(
     public async Task<bool> Delete(Guid id)
     {
         var sql = """
-            DELETE FROM ToDoState 
+            DELETE FROM ToDoStates
             WHERE Id = @Id
         """;
         var parameters = new DynamicParameters();

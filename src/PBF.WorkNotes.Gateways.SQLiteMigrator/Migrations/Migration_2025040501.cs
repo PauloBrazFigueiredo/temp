@@ -5,7 +5,7 @@ public class Migration_2025040501 : Migration
 {
     public override void Up()
     {
-        Create.Table("ToDoState")
+        Create.Table("ToDoStates")
             .WithColumn("Id").AsGuid().PrimaryKey()
             .WithColumn("Name").AsString()
             .WithColumn("IsDefault").AsBoolean();
@@ -13,6 +13,6 @@ public class Migration_2025040501 : Migration
 
     public override void Down()
     {
-        Delete.Table("ToDoState");
+        Delete.Table("ToDoStates");
     }
 }

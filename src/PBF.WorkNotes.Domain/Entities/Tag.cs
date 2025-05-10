@@ -4,5 +4,5 @@ public class Tag
 {
     public Guid Id { get; set; }
     public bool IsPermanent{ get; set; }
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 }

@@ -3,20 +3,19 @@
 [ExcludeFromCodeCoverage]
 [Trait("Integration Tests", "Gateways")]
 [TestCaseOrderer("PBF.WorkNotes.Gateways.SQLiteGateway.Tests.Attributes.FactOrderer", "PBF.WorkNotes.Gateways.SQLiteGateway.Tests")]
-public class ToDoStateSQLiteRepositoryIntegrationTests :  IClassFixture<ToDoStateSQLiteRepositoryFixture>
+public class ToDoStatesSQLiteRepositoryIntegrationTests :  IClassFixture<ToDoStatesSQLiteRepositoryFixture>
 {
-    private readonly ToDoStateSQLiteRepositoryFixture _fixture;
-    //private const string DataSourcePrefix = "ToDoStateSQLiteRepository";
+    private readonly ToDoStatesSQLiteRepositoryFixture _fixture;
     private readonly IMapper _mapper;
     private readonly IGuidProvider _guidProvider;
 
-    public ToDoStateSQLiteRepositoryIntegrationTests(ToDoStateSQLiteRepositoryFixture fixture)
+    public ToDoStatesSQLiteRepositoryIntegrationTests(ToDoStatesSQLiteRepositoryFixture fixture)
     {
         _fixture = fixture;
     }
 
     [Fact, FactOrder(1)]
-    public async Task ToDoStateSQLiteRepository_GetAll_SchouldReturnEntities()
+    public async Task ToDoStatesSQLiteRepository_GetAll_SchouldReturnEntities()
     {
         // Act
         var result = await _fixture.SUT.GetAll();
@@ -30,7 +29,7 @@ public class ToDoStateSQLiteRepositoryIntegrationTests :  IClassFixture<ToDoStat
     }
 
     [Fact, FactOrder(2)]
-    public async Task ToDoStateSQLiteRepository_CreateValidEntity_SchouldReturnId()
+    public async Task ToDoStatesSQLiteRepository_CreateValidEntity_SchouldReturnId()
     {
         // Arrange
         var entity = new ToDoState { IsDefault = true, Name = "testName" };
@@ -45,7 +44,7 @@ public class ToDoStateSQLiteRepositoryIntegrationTests :  IClassFixture<ToDoStat
     }
 
     [Fact, FactOrder(3)]
-    public async Task ToDoStateSQLiteRepository_GetByIdWithValidId_SchouldReturnEntity()
+    public async Task ToDoStatesSQLiteRepository_GetByIdWithValidId_SchouldReturnEntity()
     {
         // Act
         var result = await _fixture.SUT.GetById(_fixture.TestId);
@@ -56,7 +55,7 @@ public class ToDoStateSQLiteRepositoryIntegrationTests :  IClassFixture<ToDoStat
     }
 
     [Fact, FactOrder(4)]
-    public async Task ToDoStateSQLiteRepository_GetByIdWithInvalidId_SchouldReturnNull()
+    public async Task ToDoStatesSQLiteRepository_GetByIdWithInvalidId_SchouldReturnNull()
     {
         // Act
         var result = await _fixture.SUT.GetById(Guid.Empty);
@@ -65,8 +64,8 @@ public class ToDoStateSQLiteRepositoryIntegrationTests :  IClassFixture<ToDoStat
         result.Should().BeNull();
     }
 
-    [Fact, FactOrder(3)]
-    public async Task ToDoStateSQLiteRepository_UpdateValidEntity_SchouldReturnTrue()
+    [Fact, FactOrder(5)]
+    public async Task ToDoStatesSQLiteRepository_UpdateValidEntity_SchouldReturnTrue()
     {
         // Arrange
         var entity = new ToDoState { Id =_fixture.TestId, IsDefault = true, Name = "testName1" };
@@ -78,8 +77,8 @@ public class ToDoStateSQLiteRepositoryIntegrationTests :  IClassFixture<ToDoStat
         result.Should().BeTrue();
     }
 
-    [Fact, FactOrder(4)]
-    public async Task ToDoStateSQLiteRepository_UpdateValidEntity_SchouldReturnFalse()
+    [Fact, FactOrder(6)]
+    public async Task ToDoStatesSQLiteRepository_UpdateValidEntity_SchouldReturnFalse()
     {
         // Arrange
         var entity = new ToDoState { Id = Guid.Empty, IsDefault = true, Name = "testName1" };
@@ -91,8 +90,8 @@ public class ToDoStateSQLiteRepositoryIntegrationTests :  IClassFixture<ToDoStat
         result.Should().BeFalse();
     }
 
-    [Fact, FactOrder(5)]
-    public async Task ToDoStateSQLiteRepository_DeleteValidEntity_SchouldReturnTrue()
+    [Fact, FactOrder(7)]
+    public async Task ToDoStatesSQLiteRepository_DeleteValidEntity_SchouldReturnTrue()
     {
         // Act
         var result = await _fixture.SUT.Delete(_fixture.TestId);
@@ -101,8 +100,8 @@ public class ToDoStateSQLiteRepositoryIntegrationTests :  IClassFixture<ToDoStat
         result.Should().BeTrue();
     }
 
-    [Fact, FactOrder(6)]
-    public async Task ToDoStateSQLiteRepository_DeleteInvalidEntity_SchouldReturnFalse()
+    [Fact, FactOrder(8)]
+    public async Task ToDoStatesSQLiteRepository_DeleteInvalidEntity_SchouldReturnFalse()
     {
         // Act
         var result = await _fixture.SUT.Delete(_fixture.TestId);

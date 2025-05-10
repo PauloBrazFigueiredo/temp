@@ -2,40 +2,40 @@
 
 [ExcludeFromCodeCoverage]
 [Trait("Unit Tests", "Gateways")]
-public class ToDoStateSQLiteRepositoryUnitTests
+public class ToDoStatesSQLiteRepositoryUnitTests
 {
     private readonly IMapper _mapper;
     private readonly IGuidProvider _guidProvider;
 
-    public ToDoStateSQLiteRepositoryUnitTests()
+    public ToDoStatesSQLiteRepositoryUnitTests()
     {
         _mapper = CreateMapper();
         _guidProvider = CreateGuidProvider();
     }
 
     [Fact]
-    public void ToDoStateSQLiteRepository_Constructor_SchouldCreateInstance()
+    public void ToDoStatesSQLiteRepository_Constructor_SchouldCreateInstance()
     {
         // Arrange
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
 
         // Act
-        var sut = new ToDoStateSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
+        var sut = new ToDoStatesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Assert
         sut.Should().NotBeNull();
-        sut.Should().BeOfType<ToDoStateSQLiteRepository>();
-        sut.Should().BeAssignableTo<IToDoStateRepository>();
+        sut.Should().BeOfType<ToDoStatesSQLiteRepository>();
+        sut.Should().BeAssignableTo<IToDoStatesRepository>();
     }
 
     [Fact]
-    public async Task ToDoStateSQLiteRepository_GetAll_ShouldreturnEntities()
+    public async Task ToDoStatesSQLiteRepository_GetAll_ShouldreturnEntities()
     {
         // Arrange
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.QueryAsync(It.IsAny<string>()))
             .ReturnsAsync(new List<ToDoStateModel>());
-        var sut = new ToDoStateSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
+        var sut = new ToDoStatesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.GetAll();
@@ -46,12 +46,12 @@ public class ToDoStateSQLiteRepositoryUnitTests
                 Id,
                 Name,
                 IsDefault
-            FROM ToDoState
+            FROM ToDoStates
         """), Times.Once);
     }
 
     [Fact]
-    public async Task ToDoStateSQLiteRepository_GetByIdValidEntity_ShouldReturnEntity()
+    public async Task ToDoStatesSQLiteRepository_GetByIdValidEntity_ShouldReturnEntity()
     {
         // Arrange
         var id = Guid.NewGuid();
@@ -59,7 +59,7 @@ public class ToDoStateSQLiteRepositoryUnitTests
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.QuerySingleOrDefaultAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
             .ReturnsAsync(new ToDoStateModel());
-        var sut = new ToDoStateSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
+        var sut = new ToDoStatesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.GetById(id);
@@ -70,7 +70,7 @@ public class ToDoStateSQLiteRepositoryUnitTests
                 Id,
                 Name,
                 IsDefault
-            FROM ToDoState
+            FROM ToDoStates
             WHERE Id = @Id
         """, 
             It.Is<DynamicParameters>(p =>
@@ -80,7 +80,7 @@ public class ToDoStateSQLiteRepositoryUnitTests
     }
 
     [Fact]
-    public async Task ToDoStateSQLiteRepository_GetByIdInvalidEntity_ShouldReturnNull()
+    public async Task ToDoStatesSQLiteRepository_GetByIdInvalidEntity_ShouldReturnNull()
     {
         // Arrange
         var id = Guid.NewGuid();
@@ -88,7 +88,7 @@ public class ToDoStateSQLiteRepositoryUnitTests
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.QuerySingleOrDefaultAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
             .ReturnsAsync((ToDoStateModel)null);
-        var sut = new ToDoStateSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
+        var sut = new ToDoStatesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.GetById(id);
@@ -99,7 +99,7 @@ public class ToDoStateSQLiteRepositoryUnitTests
                 Id,
                 Name,
                 IsDefault
-            FROM ToDoState
+            FROM ToDoStates
             WHERE Id = @Id
         """,
             It.Is<DynamicParameters>(p =>
@@ -109,7 +109,7 @@ public class ToDoStateSQLiteRepositoryUnitTests
     }
 
     [Fact]
-    public async Task ToDoStateSQLiteRepository_CreateValidEntity_ShouldReturnGuid()
+    public async Task ToDoStatesSQLiteRepository_CreateValidEntity_ShouldReturnGuid()
     {
         // Arrange
         var id = Guid.NewGuid();
@@ -118,14 +118,14 @@ public class ToDoStateSQLiteRepositoryUnitTests
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.ExecuteAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
             .ReturnsAsync(1);
-        var sut = new ToDoStateSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
+        var sut = new ToDoStatesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.Create(entity);
 
         // Assert
         mockDatabaseAccess.Verify(mock => mock.ExecuteAsync("""
-            INSERT INTO ToDoState (Id, Name, IsDefault)
+            INSERT INTO ToDoStates (Id, Name, IsDefault)
             VALUES (@Id, @Name, @IsDefault)
         """,
             It.Is<DynamicParameters>(p =>
@@ -135,7 +135,7 @@ public class ToDoStateSQLiteRepositoryUnitTests
     }
 
     [Fact]
-    public async Task ToDoStateSQLiteRepository_UpdateValidEntity_ShouldReturnTrue()
+    public async Task ToDoStatesSQLiteRepository_UpdateValidEntity_ShouldReturnTrue()
     {
         // Arrange
         var id = Guid.NewGuid();
@@ -144,14 +144,14 @@ public class ToDoStateSQLiteRepositoryUnitTests
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.ExecuteAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
             .ReturnsAsync(1);
-        var sut = new ToDoStateSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
+        var sut = new ToDoStatesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.Update(entity);
 
         // Assert
         mockDatabaseAccess.Verify(mock => mock.ExecuteAsync("""
-            UPDATE ToDoState 
+            UPDATE ToDoStates
             SET Name = @Name,
                 IsDefault = @IsDefault
             WHERE Id = @Id
@@ -165,7 +165,7 @@ public class ToDoStateSQLiteRepositoryUnitTests
     }
 
     [Fact]
-    public async Task ToDoStateSQLiteRepository_UpdateInvalidEntity_ShouldReturnFalse()
+    public async Task ToDoStatesSQLiteRepository_UpdateInvalidEntity_ShouldReturnFalse()
     {
         // Arrange
         var id = Guid.NewGuid();
@@ -174,14 +174,14 @@ public class ToDoStateSQLiteRepositoryUnitTests
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.ExecuteAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
             .ReturnsAsync(0);
-        var sut = new ToDoStateSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
+        var sut = new ToDoStatesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.Update(entity);
 
         // Assert
         mockDatabaseAccess.Verify(mock => mock.ExecuteAsync("""
-            UPDATE ToDoState 
+            UPDATE ToDoStates
             SET Name = @Name,
                 IsDefault = @IsDefault
             WHERE Id = @Id
@@ -195,7 +195,7 @@ public class ToDoStateSQLiteRepositoryUnitTests
     }
 
     [Fact]
-    public async Task ToDoStateSQLiteRepository_DeleteValidEntity_ShouldReturnTrue()
+    public async Task ToDoStatesSQLiteRepository_DeleteValidEntity_ShouldReturnTrue()
     {
         // Arrange
         var id = Guid.NewGuid();
@@ -203,14 +203,14 @@ public class ToDoStateSQLiteRepositoryUnitTests
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.ExecuteAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
             .ReturnsAsync(1);
-        var sut = new ToDoStateSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
+        var sut = new ToDoStatesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.Delete(id);
 
         // Assert
         mockDatabaseAccess.Verify(mock => mock.ExecuteAsync("""
-            DELETE FROM ToDoState 
+            DELETE FROM ToDoStates
             WHERE Id = @Id
         """,
         It.Is<DynamicParameters>(p =>
@@ -220,7 +220,7 @@ public class ToDoStateSQLiteRepositoryUnitTests
     }
 
     [Fact]
-    public async Task ToDoStateSQLiteRepository_DeleteInvalidEntity_ShouldReturnFalse()
+    public async Task ToDoStatesSQLiteRepository_DeleteInvalidEntity_ShouldReturnFalse()
     {
         // Arrange
         var id = Guid.NewGuid();
@@ -228,14 +228,14 @@ public class ToDoStateSQLiteRepositoryUnitTests
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.ExecuteAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
             .ReturnsAsync(0);
-        var sut = new ToDoStateSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
+        var sut = new ToDoStatesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.Delete(id);
 
         // Assert
         mockDatabaseAccess.Verify(mock => mock.ExecuteAsync("""
-            DELETE FROM ToDoState 
+            DELETE FROM ToDoStates
             WHERE Id = @Id
         """,
         It.Is<DynamicParameters>(p =>

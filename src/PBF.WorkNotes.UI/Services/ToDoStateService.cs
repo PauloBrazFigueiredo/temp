@@ -2,9 +2,9 @@
 
 public  class ToDoStateService : IToDoStateService
 {
-    private readonly IToDoStateRepository _toDoStateRepository;
+    private readonly IToDoStatesRepository _toDoStateRepository;
 
-    public ToDoStateService(IToDoStateRepository toDoStateRepository)
+    public ToDoStateService(IToDoStatesRepository toDoStateRepository)
     {
         _toDoStateRepository = toDoStateRepository;
     }

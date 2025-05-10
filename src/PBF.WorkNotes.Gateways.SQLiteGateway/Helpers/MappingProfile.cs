@@ -6,5 +6,7 @@ public class MappingProfile : Profile
     {
         CreateMap<ToDoState, ToDoStateModel>();
         CreateMap<ToDoStateModel, ToDoState>();
+        CreateMap<Tag, TagModel>();
+        CreateMap<TagModel, Tag>();
     }
 }

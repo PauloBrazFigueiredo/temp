@@ -1,6 +1,6 @@
-﻿namespace PBF.WorkNotes.Application.Repository.Interfaces;
+﻿namespace PBF.WorkNotes.Application.Repositories.Interfaces;
 
-public interface IToDoStateRepository
+public interface IToDoStatesRepository
 {
     Task<IEnumerable<ToDoState>> GetAll();
     Task<ToDoState> GetById(Guid id);

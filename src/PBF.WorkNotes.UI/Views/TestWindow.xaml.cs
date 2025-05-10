@@ -5,7 +5,7 @@ namespace PBF.WorkNotes.UI;
 public partial class TestWindow : Window
 {
     //private ObservableCollection<Product> _products;
-    private readonly IToDoStateRepository _toDoStateRepository;
+    private readonly IToDoStatesRepository _toDoStateRepository;
 
     public TestWindow(TestViewModel viewModel)
     {

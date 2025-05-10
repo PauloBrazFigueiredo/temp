@@ -2,7 +2,7 @@
 
 public partial class MainWindow : Window
 {
-    private readonly IToDoStateRepository _toDoStateRepository;
+    private readonly IToDoStatesRepository _toDoStateRepository;
 
     public MainWindow()
     {
