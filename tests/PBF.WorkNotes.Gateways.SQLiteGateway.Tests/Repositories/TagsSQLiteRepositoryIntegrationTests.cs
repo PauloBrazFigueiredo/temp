@@ -80,7 +80,7 @@ public class TagsSQLiteRepositoryIntegrationTests :  IClassFixture<TagsSQLiteRep
     }
 
     [Fact, FactOrder(6)]
-    public async Task TagsSQLiteRepository_UpdateValidEntity_SchouldReturnFalse()
+    public async Task TagsSQLiteRepository_UpdateInvalidEntity_SchouldReturnFalse()
     {
         // Arrange
         var entity = new Tag { Id = Guid.Empty, IsPermanent = false, Name = "testName1" };

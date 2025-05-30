@@ -29,7 +29,7 @@ public class ToDoStatesSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
     }
 
     [Fact]
-    public async Task ToDoStatesSQLiteRepository_GetAll_ShouldreturnEntities()
+    public async Task ToDoStatesSQLiteRepository_GetAll_ShouldReturnEntities()
     {
         // Arrange
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
@@ -112,7 +112,6 @@ public class ToDoStatesSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
     public async Task ToDoStatesSQLiteRepository_CreateValidEntity_ShouldReturnGuid()
     {
         // Arrange
-        var id = Guid.NewGuid();
         var entity = new ToDoState { IsDefault = true, Name = "test" };
 
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();

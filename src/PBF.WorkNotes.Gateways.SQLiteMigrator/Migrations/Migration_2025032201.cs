@@ -7,8 +7,8 @@ public class Migration_2025032201 : Migration
     {
         Create.Table("Tags")
             .WithColumn("Id").AsGuid().PrimaryKey()
-            .WithColumn("IsPermanent").AsBoolean()
-            .WithColumn("Name").AsString();
+            .WithColumn("Name").AsString()
+            .WithColumn("IsPermanent").AsBoolean();
     }
 
     public override void Down()

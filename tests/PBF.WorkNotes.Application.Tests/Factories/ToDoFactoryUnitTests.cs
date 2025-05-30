@@ -44,7 +44,7 @@ public class ToDoFactoryUnitTests
         //result.State.Id.Should().Be("Active");
         result.State.Name.Should().Be("Active");
         result.Tags.Should().BeEmpty();
-        result.Priority.Should().BeOfType<ToDoPriority>();
+        result.Priority.Should().BeOfType<Priority>();
         //TODO: Implement TodoPriorityRepository
         //result.Priority.Id.Should().Be();
         result.Order.Should().Be(0);

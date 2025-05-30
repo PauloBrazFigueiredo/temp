@@ -32,7 +32,7 @@ public  class SQLiteDatabaseAccess<M>: IDatabaseAccess<M>
             _connection.Open();
         }
 
-        _connection = new SqliteConnection(SettingsProvider.GetConnectionString(_settings, "WorkNotesData"));
+        _connection.Execute("PRAGMA foreign_keys = OFF;");
         return _connection;
     }
 

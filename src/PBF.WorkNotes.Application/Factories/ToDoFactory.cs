@@ -20,7 +20,7 @@ public class ToDoFactory : IToDoFactory
             Description = string.Empty,
             State = new ToDoState { Name = "Active" },
             Tags = new List<Tag>(),
-            Priority = new ToDoPriority { Name = "None" },
+            Priority = new Priority { Name = "None" },
             Order = 0,
             WorkDate = _timeProvider.GetUtcNow(),
             DueDate = null,

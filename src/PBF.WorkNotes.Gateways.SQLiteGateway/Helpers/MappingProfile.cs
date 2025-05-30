@@ -8,5 +8,9 @@ public class MappingProfile : Profile
         CreateMap<ToDoStateModel, ToDoState>();
         CreateMap<Tag, TagModel>();
         CreateMap<TagModel, Tag>();
+        CreateMap<Priority, PriorityModel>();
+        CreateMap<PriorityModel, Priority>();
+        CreateMap<ToDo, ToDoModel>();
+        CreateMap<ToDoModel, ToDo>();
     }
 }

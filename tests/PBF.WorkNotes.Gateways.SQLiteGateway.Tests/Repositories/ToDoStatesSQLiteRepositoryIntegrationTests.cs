@@ -76,7 +76,7 @@ public class ToDoStatesSQLiteRepositoryIntegrationTests :  IClassFixture<ToDoSta
     }
 
     [Fact, FactOrder(6)]
-    public async Task ToDoStatesSQLiteRepository_UpdateValidEntity_SchouldReturnFalse()
+    public async Task ToDoStatesSQLiteRepository_UpdateInvalidEntity_SchouldReturnFalse()
     {
         // Arrange
         var entity = new ToDoState { Id = Guid.Empty, IsDefault = true, Name = "testName1" };

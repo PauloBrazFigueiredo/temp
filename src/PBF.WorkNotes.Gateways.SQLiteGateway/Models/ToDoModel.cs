@@ -1,15 +1,13 @@
-﻿namespace PBF.WorkNotes.Domain.Entities;
+﻿namespace PBF.WorkNotes.Gateways.SQLiteGateway.Models;
 
-public class ToDo
+public class ToDoModel
 {
     public Guid Id { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
     public Guid StateId { get; set; }
-    public ToDoState State { get; set; }
     public IEnumerable<Tag> Tags { get; set; }
     public Guid PriorityId { get; set; }
-    public Priority Priority { get; set; }
     public int? Order { get; set; }
     public DateTime? WorkDate { get; set; }
     public DateTime? DueDate { get; set; }
