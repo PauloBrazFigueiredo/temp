@@ -2,9 +2,9 @@
 
 public class PriorityModel
 {
-    public string Id { get; set; }
-    public string Name { get; set; }
-    public string Level { get; set; }
-    public string Color { get; set; }
+    public Guid Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Level { get; set; } = string.Empty;
+    public string Color { get; set; } = string.Empty;
     public bool IsDefault { get; set; }
 }

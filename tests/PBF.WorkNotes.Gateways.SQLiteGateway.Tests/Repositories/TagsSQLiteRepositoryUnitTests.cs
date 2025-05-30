@@ -87,7 +87,7 @@ public class TagsSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
 
         var mockDatabaseAccess = new Mock<IDatabaseAccess<TagModel>>();
         mockDatabaseAccess.Setup(mock => mock.QuerySingleOrDefaultAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
-            .ReturnsAsync((TagModel)null);
+            .ReturnsAsync((TagModel?)null);
         var sut = new TagsSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act

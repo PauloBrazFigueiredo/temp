@@ -42,7 +42,7 @@ public  class SQLiteDatabaseAccess<M>: IDatabaseAccess<M>
         {
             _connection.Close();
         }
-        _connection.Dispose();
+        _connection?.Dispose();
     }
 
     public async Task<IEnumerable<M>> QueryAsync(string sql)

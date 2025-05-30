@@ -4,7 +4,7 @@
 public class BaseFixture
 {
     protected bool FirstFactOrderDone { get; set; } = false;
-    protected IServiceProvider ServiceProvider { get; set; }
+    protected IServiceProvider ServiceProvider { get; set; } = null!;
     public Guid TestId { get; set; }
 
     public void Initialize(string dataSourcePrefix)

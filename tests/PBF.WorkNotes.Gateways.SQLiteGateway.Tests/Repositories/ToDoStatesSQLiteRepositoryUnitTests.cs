@@ -87,7 +87,7 @@ public class ToDoStatesSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
 
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.QuerySingleOrDefaultAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
-            .ReturnsAsync((ToDoStateModel)null);
+            .ReturnsAsync((ToDoStateModel?)null);
         var sut = new ToDoStatesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act

@@ -24,8 +24,21 @@ public class ToDosSQLiteRepositoryIntegrationTests :  IClassFixture<ToDosSQLiteR
         {
             Title = "testTitle",
             Description = "testDescription",
-            StateId = _states.FirstOrDefault().Id,
-            PriorityId = _priorities.FirstOrDefault().Id,
+            StateId = this._states.First().Id,
+            State = new ToDoState
+            {
+                Id = this._states.First().Id,
+                Name = this._states.First().Name
+            },
+            PriorityId = _priorities.First().Id,
+            Priority = new Priority
+            {
+                Id = _priorities.First().Id,
+                Name = _priorities.First().Name,
+                Level = _priorities.First().Level,
+                Color = _priorities.First().Color,
+                IsDefault = _priorities.First().IsDefault
+            },
             Order = 1,
             WorkDate = new DateTime(2023, 10, 1),
             DueDate = new DateTime(2023, 10, 2),
@@ -84,8 +97,21 @@ public class ToDosSQLiteRepositoryIntegrationTests :  IClassFixture<ToDosSQLiteR
             Id = _fixture.TestId,
             Title = "testTitle1",
             Description = "testDescription1",
-            StateId = _states.FirstOrDefault().Id,
-            PriorityId = _priorities.FirstOrDefault().Id,
+            StateId = _states.First().Id,
+            State = new ToDoState
+            {
+                Id = _states.First().Id,
+                Name = _states.First().Name
+            },
+            PriorityId = _priorities.First().Id,
+            Priority = new Priority
+            {
+                Id = _priorities.First().Id,
+                Name = _priorities.First().Name,
+                Level = _priorities.First().Level,
+                Color = _priorities.First().Color,
+                IsDefault = _priorities.First().IsDefault
+            },
             Order = 1,
             WorkDate = new DateTime(2023, 10, 1),
             DueDate = new DateTime(2023, 10, 2),
@@ -108,8 +134,21 @@ public class ToDosSQLiteRepositoryIntegrationTests :  IClassFixture<ToDosSQLiteR
             Id = Guid.Empty,
             Title = "testTitle1",
             Description = "testDescription1",
-            StateId = _states.FirstOrDefault().Id,
-            PriorityId = _priorities.FirstOrDefault().Id,
+            StateId = _states.First().Id,
+            State = new ToDoState
+            {
+                Id = _states.First().Id,
+                Name = _states.First().Name
+            },
+            PriorityId = _priorities.First().Id,
+            Priority = new Priority
+            {
+                Id = _priorities.First().Id,
+                Name = _priorities.First().Name,
+                Level = _priorities.First().Level,
+                Color = _priorities.First().Color,
+                IsDefault = _priorities.First().IsDefault
+            },
             Order = 1,
             WorkDate = new DateTime(2023, 10, 1),
             DueDate = new DateTime(2023, 10, 2),

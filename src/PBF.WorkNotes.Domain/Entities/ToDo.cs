@@ -3,13 +3,13 @@
 public class ToDo
 {
     public Guid Id { get; set; }
-    public string Title { get; set; }
-    public string Description { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
     public Guid StateId { get; set; }
-    public ToDoState State { get; set; }
-    public IEnumerable<Tag> Tags { get; set; }
+    public required ToDoState State { get; set; } 
+    public IEnumerable<Tag> Tags { get; set; } = new List<Tag>();
     public Guid PriorityId { get; set; }
-    public Priority Priority { get; set; }
+    public required Priority Priority { get; set; }
     public int? Order { get; set; }
     public DateTime? WorkDate { get; set; }
     public DateTime? DueDate { get; set; }

@@ -91,7 +91,7 @@ public class PrioritiesSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
 
         var mockDatabaseAccess = new Mock<IDatabaseAccess<PriorityModel>>();
         mockDatabaseAccess.Setup(mock => mock.QuerySingleOrDefaultAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
-            .ReturnsAsync((PriorityModel)null);
+            .ReturnsAsync((PriorityModel?)null);
         var sut = new PrioritiesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act

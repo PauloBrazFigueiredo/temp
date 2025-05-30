@@ -101,7 +101,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
 
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoModel>>();
         mockDatabaseAccess.Setup(mock => mock.QuerySingleOrDefaultAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
-            .ReturnsAsync((ToDoModel)null);
+            .ReturnsAsync((ToDoModel?)null);
         var sut = new ToDosSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
@@ -139,7 +139,20 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             Title = "testTitle",
             Description = "testDescription",
             StateId = stateId,
+            State = new ToDoState
+            {
+                Id = stateId,
+                Name = "testState"
+            },
             PriorityId = priorityId,
+            Priority = new Priority
+            {
+                Id = priorityId,
+                Name = "testPriority",
+                Level = "P1",
+                Color = "#FFFFFF",
+                IsDefault = false
+            },
             Order = 1,
             WorkDate = new DateTime(2023, 10, 1),
             DueDate = new DateTime(2023, 10, 2),
@@ -184,7 +197,20 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             Title = "testTitle",
             Description = "testDescription",
             StateId = stateId,
+            State = new ToDoState
+            {
+                Id = stateId,
+                Name = "testState"
+            },
             PriorityId = priorityId,
+            Priority = new Priority
+            {
+                Id = priorityId,
+                Name = "testPriority",
+                Level = "P1",
+                Color = "#FFFFFF",
+                IsDefault = false
+            },
             Order = 1,
             WorkDate = new DateTime(2023, 10, 1),
             DueDate = new DateTime(2023, 10, 2),
@@ -239,7 +265,20 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             Title = "testTitle",
             Description = "testDescription",
             StateId = stateId,
+            State = new ToDoState
+            {
+                Id = stateId,
+                Name = "testState"
+            },
             PriorityId = priorityId,
+            Priority = new Priority
+            {
+                Id = priorityId,
+                Name = "testPriority",
+                Level = "P1",
+                Color = "#FFFFFF",
+                IsDefault = false
+            },
             Order = 1,
             WorkDate = new DateTime(2023, 10, 1),
             DueDate = new DateTime(2023, 10, 2),
