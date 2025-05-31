@@ -1,4 +1,4 @@
-﻿namespace PBF.WorkNotes.Gateways.SQLiteGateway.Tests.Repositories;
+﻿namespace PBF.WorkNotes.Gateways.SQLiteGateway.Tests.Repositories.UnitTests;
 
 [ExcludeFromCodeCoverage]
 [Trait("Unit Tests", "Gateways")]

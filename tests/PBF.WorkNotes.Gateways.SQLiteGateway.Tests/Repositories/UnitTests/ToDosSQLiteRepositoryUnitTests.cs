@@ -1,6 +1,6 @@
 ﻿using PBF.WorkNotes.Domain.Entities;
 
-namespace PBF.WorkNotes.Gateways.SQLiteGateway.Tests.Repositories;
+namespace PBF.WorkNotes.Gateways.SQLiteGateway.Tests.Repositories.UnitTests;
 
 [ExcludeFromCodeCoverage]
 [Trait("Unit Tests", "Gateways")]

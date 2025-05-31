@@ -1,41 +1,41 @@
-﻿namespace PBF.WorkNotes.Gateways.SQLiteGateway.Tests.Repositories;
+﻿namespace PBF.WorkNotes.Gateways.SQLiteGateway.Tests.Repositories.UnitTests;
 
 [ExcludeFromCodeCoverage]
 [Trait("Unit Tests", "Gateways")]
-public class TagsSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
+public class ToDoStatesSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
 {
     private readonly IMapper _mapper;
     private readonly IGuidProvider _guidProvider;
 
-    public TagsSQLiteRepositoryUnitTests()
+    public ToDoStatesSQLiteRepositoryUnitTests()
     {
         _mapper = CreateMapper();
         _guidProvider = CreateGuidProvider();
     }
 
     [Fact]
-    public void TagsSQLiteRepository_Constructor_SchouldCreateInstance()
+    public void ToDoStatesSQLiteRepository_Constructor_SchouldCreateInstance()
     {
         // Arrange
-        var mockDatabaseAccess = new Mock<IDatabaseAccess<TagModel>>();
+        var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
 
         // Act
-        var sut = new TagsSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
+        var sut = new ToDoStatesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Assert
         sut.Should().NotBeNull();
-        sut.Should().BeOfType<TagsSQLiteRepository>();
-        sut.Should().BeAssignableTo<ITagsRepository>();
+        sut.Should().BeOfType<ToDoStatesSQLiteRepository>();
+        sut.Should().BeAssignableTo<IToDoStatesRepository>();
     }
 
     [Fact]
-    public async Task TagsSQLiteRepository_GetAll_ShouldReturnEntities()
+    public async Task ToDoStatesSQLiteRepository_GetAll_ShouldReturnEntities()
     {
         // Arrange
-        var mockDatabaseAccess = new Mock<IDatabaseAccess<TagModel>>();
+        var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.QueryAsync(It.IsAny<string>()))
-            .ReturnsAsync(new List<TagModel>());
-        var sut = new TagsSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
+            .ReturnsAsync(new List<ToDoStateModel>());
+        var sut = new ToDoStatesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.GetAll();
@@ -45,21 +45,21 @@ public class TagsSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             SELECT
                 Id,
                 Name,
-                IsPermanent
-            FROM Tags
+                IsDefault
+            FROM ToDoStates
         """), Times.Once);
     }
 
     [Fact]
-    public async Task TagsSQLiteRepository_GetByIdValidEntity_ShouldReturnEntity()
+    public async Task ToDoStatesSQLiteRepository_GetByIdValidEntity_ShouldReturnEntity()
     {
         // Arrange
         var id = Guid.NewGuid();
 
-        var mockDatabaseAccess = new Mock<IDatabaseAccess<TagModel>>();
+        var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.QuerySingleOrDefaultAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
-            .ReturnsAsync(new TagModel());
-        var sut = new TagsSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
+            .ReturnsAsync(new ToDoStateModel());
+        var sut = new ToDoStatesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.GetById(id);
@@ -69,8 +69,8 @@ public class TagsSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             SELECT
                 Id,
                 Name,
-                IsPermanent
-            FROM Tags
+                IsDefault
+            FROM ToDoStates
             WHERE Id = @Id
         """, 
             It.Is<DynamicParameters>(p =>
@@ -80,15 +80,15 @@ public class TagsSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
     }
 
     [Fact]
-    public async Task TagsSQLiteRepository_GetByIdInvalidEntity_ShouldReturnNull()
+    public async Task ToDoStatesSQLiteRepository_GetByIdInvalidEntity_ShouldReturnNull()
     {
         // Arrange
         var id = Guid.NewGuid();
 
-        var mockDatabaseAccess = new Mock<IDatabaseAccess<TagModel>>();
+        var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.QuerySingleOrDefaultAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
-            .ReturnsAsync((TagModel?)null);
-        var sut = new TagsSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
+            .ReturnsAsync((ToDoStateModel?)null);
+        var sut = new ToDoStatesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.GetById(id);
@@ -98,8 +98,8 @@ public class TagsSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             SELECT
                 Id,
                 Name,
-                IsPermanent
-            FROM Tags
+                IsDefault
+            FROM ToDoStates
             WHERE Id = @Id
         """,
             It.Is<DynamicParameters>(p =>
@@ -109,108 +109,107 @@ public class TagsSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
     }
 
     [Fact]
-    public async Task TagsSQLiteRepository_CreateValidEntity_ShouldReturnGuid()
+    public async Task ToDoStatesSQLiteRepository_CreateValidEntity_ShouldReturnGuid()
     {
         // Arrange
-        var id = Guid.NewGuid();
-        var entity = new Tag { IsPermanent = true, Name = "test" };
+        var entity = new ToDoState { IsDefault = true, Name = "test" };
 
-        var mockDatabaseAccess = new Mock<IDatabaseAccess<TagModel>>();
+        var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.ExecuteAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
             .ReturnsAsync(1);
-        var sut = new TagsSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
+        var sut = new ToDoStatesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.Create(entity);
 
         // Assert
         mockDatabaseAccess.Verify(mock => mock.ExecuteAsync("""
-            INSERT INTO Tags (Id, Name, IsPermanent)
-            VALUES (@Id, @Name, @IsPermanent)
+            INSERT INTO ToDoStates (Id, Name, IsDefault)
+            VALUES (@Id, @Name, @IsDefault)
         """,
             It.Is<DynamicParameters>(p =>
-                p.Get<bool>("IsPermanent") == entity.IsPermanent
+                p.Get<bool>("IsDefault") == entity.IsDefault
                 && p.Get<string>("Name") == entity.Name)),
             Times.Once);
     }
 
     [Fact]
-    public async Task TagsSQLiteRepository_UpdateValidEntity_ShouldReturnTrue()
+    public async Task ToDoStatesSQLiteRepository_UpdateValidEntity_ShouldReturnTrue()
     {
         // Arrange
         var id = Guid.NewGuid();
-        var entity = new Tag { Id = id, IsPermanent = true, Name = "test" };
+        var entity = new ToDoState { Id = id, IsDefault = true, Name = "test" };
 
-        var mockDatabaseAccess = new Mock<IDatabaseAccess<TagModel>>();
+        var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.ExecuteAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
             .ReturnsAsync(1);
-        var sut = new TagsSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
+        var sut = new ToDoStatesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.Update(entity);
 
         // Assert
         mockDatabaseAccess.Verify(mock => mock.ExecuteAsync("""
-            UPDATE Tags
+            UPDATE ToDoStates
             SET Name = @Name,
-                IsPermanent = @IsPermanent
+                IsDefault = @IsDefault
             WHERE Id = @Id
         """,
             It.Is<DynamicParameters>(p =>
                 p.Get<Guid>("Id") == entity.Id
-                &&  p.Get<bool>("IsPermanent") == entity.IsPermanent
+                &&  p.Get<bool>("IsDefault") == entity.IsDefault
                 && p.Get<string>("Name") == entity.Name)),
             Times.Once);
         result.Should().BeTrue();
     }
 
     [Fact]
-    public async Task TagsSQLiteRepository_UpdateInvalidEntity_ShouldReturnFalse()
+    public async Task ToDoStatesSQLiteRepository_UpdateInvalidEntity_ShouldReturnFalse()
     {
         // Arrange
         var id = Guid.NewGuid();
-        var entity = new Tag { Id = id, IsPermanent = true, Name = "test" };
+        var entity = new ToDoState { Id = id, IsDefault = true, Name = "test" };
 
-        var mockDatabaseAccess = new Mock<IDatabaseAccess<TagModel>>();
+        var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.ExecuteAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
             .ReturnsAsync(0);
-        var sut = new TagsSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
+        var sut = new ToDoStatesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.Update(entity);
 
         // Assert
         mockDatabaseAccess.Verify(mock => mock.ExecuteAsync("""
-            UPDATE Tags
+            UPDATE ToDoStates
             SET Name = @Name,
-                IsPermanent = @IsPermanent
+                IsDefault = @IsDefault
             WHERE Id = @Id
         """,
             It.Is<DynamicParameters>(p =>
                 p.Get<Guid>("Id") == entity.Id
-                && p.Get<bool>("IsPermanent") == entity.IsPermanent
+                && p.Get<bool>("IsDefault") == entity.IsDefault
                 && p.Get<string>("Name") == entity.Name)),
             Times.Once);
         result.Should().BeFalse();
     }
 
     [Fact]
-    public async Task TagsSQLiteRepository_DeleteValidEntity_ShouldReturnTrue()
+    public async Task ToDoStatesSQLiteRepository_DeleteValidEntity_ShouldReturnTrue()
     {
         // Arrange
         var id = Guid.NewGuid();
 
-        var mockDatabaseAccess = new Mock<IDatabaseAccess<TagModel>>();
+        var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.ExecuteAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
             .ReturnsAsync(1);
-        var sut = new TagsSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
+        var sut = new ToDoStatesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.Delete(id);
 
         // Assert
         mockDatabaseAccess.Verify(mock => mock.ExecuteAsync("""
-            DELETE FROM Tags
+            DELETE FROM ToDoStates
             WHERE Id = @Id
         """,
         It.Is<DynamicParameters>(p =>
@@ -220,22 +219,22 @@ public class TagsSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
     }
 
     [Fact]
-    public async Task TagsSQLiteRepository_DeleteInvalidEntity_ShouldReturnFalse()
+    public async Task ToDoStatesSQLiteRepository_DeleteInvalidEntity_ShouldReturnFalse()
     {
         // Arrange
         var id = Guid.NewGuid();
 
-        var mockDatabaseAccess = new Mock<IDatabaseAccess<TagModel>>();
+        var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoStateModel>>();
         mockDatabaseAccess.Setup(mock => mock.ExecuteAsync(It.IsAny<string>(), It.IsAny<DynamicParameters>()))
             .ReturnsAsync(0);
-        var sut = new TagsSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
+        var sut = new ToDoStatesSQLiteRepository(mockDatabaseAccess.Object, _mapper, _guidProvider);
 
         // Act
         var result = await sut.Delete(id);
 
         // Assert
         mockDatabaseAccess.Verify(mock => mock.ExecuteAsync("""
-            DELETE FROM Tags
+            DELETE FROM ToDoStates
             WHERE Id = @Id
         """,
         It.Is<DynamicParameters>(p =>
