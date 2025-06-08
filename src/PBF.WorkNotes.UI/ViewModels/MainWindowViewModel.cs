@@ -4,15 +4,11 @@ public class MainWindowViewModel : BaseNotifyPropertyChanged, INotifyPropertyCha
 {
     private readonly IServiceProvider _serviceProvider;
     private Dictionary<string, ViewModelBase> _viewModels = new Dictionary<string, ViewModelBase>();
-    
-   
-   
+
     public MainWindowViewModel(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        // Set default view
         SwitchView("Home");
-        //CurrentViewModel = _viewModels["Home"];
     }
 
     private ViewModelBase _currentViewModel;
