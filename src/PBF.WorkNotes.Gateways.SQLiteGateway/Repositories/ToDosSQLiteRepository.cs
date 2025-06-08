@@ -12,7 +12,7 @@ public class ToDosSQLiteRepository(
             SELECT
                 Id,
                 Title,
-                Description,
+                Notes,
                 StateId,
                 PriorityId,
                 "Order",
@@ -31,7 +31,7 @@ public class ToDosSQLiteRepository(
             SELECT
                 Id,
                 Title,
-                Description,
+                Notes,
                 StateId,
                 PriorityId,
                 "Order",
@@ -51,15 +51,15 @@ public class ToDosSQLiteRepository(
     public async Task<Guid> Create(ToDo entity)
     {
         var sql = """
-            INSERT INTO ToDos ("Id", "Title", "Description", "StateId", "PriorityId", "Order", "WorkDate", "DueDate", "CreatedDate")
-            VALUES (@Id, @Title, @Description, @StateId, @PriorityId, @Order, @WorkDate, @DueDate, @CreatedDate)
+            INSERT INTO ToDos ("Id", "Title", "Notes", "StateId", "PriorityId", "Order", "WorkDate", "DueDate", "CreatedDate")
+            VALUES (@Id, @Title, @Notes, @StateId, @PriorityId, @Order, @WorkDate, @DueDate, @CreatedDate)
         """;
         var model = mapper.Map<ToDoModel>(entity);
         var parameters = new DynamicParameters();
         var id = guidProvider.GetGuid();
         parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
         parameters.Add("Title", model.Title, DbType.String, ParameterDirection.Input);
-        parameters.Add("Description", model.Description, DbType.String, ParameterDirection.Input);
+        parameters.Add("Notes", model.Notes, DbType.String, ParameterDirection.Input);
         parameters.Add("StateId", model.StateId, DbType.Guid, ParameterDirection.Input);
         parameters.Add("PriorityId", model.PriorityId, DbType.Guid, ParameterDirection.Input);
         parameters.Add("Order", model.Order, DbType.Int32, ParameterDirection.Input);
@@ -76,7 +76,7 @@ public class ToDosSQLiteRepository(
         var sql = """
             UPDATE ToDos
             SET Title = @Title,
-                Description = @Description,
+                Notes = @Notes,
                 StateId = @StateId,
                 PriorityId = @PriorityId,
                 "Order" = @Order,
@@ -89,7 +89,7 @@ public class ToDosSQLiteRepository(
         var parameters = new DynamicParameters();
         parameters.Add("Id", entity.Id, DbType.Guid, ParameterDirection.Input);
         parameters.Add("Title", entity.Title, DbType.String, ParameterDirection.Input);
-        parameters.Add("Description", entity.Description, DbType.String, ParameterDirection.Input);
+        parameters.Add("Notes", entity.Notes, DbType.String, ParameterDirection.Input);
         parameters.Add("StateId", entity.StateId, DbType.Guid, ParameterDirection.Input);
         parameters.Add("PriorityId", entity.PriorityId, DbType.Guid, ParameterDirection.Input);
         parameters.Add("Order", entity.Order, DbType.Int32, ParameterDirection.Input);

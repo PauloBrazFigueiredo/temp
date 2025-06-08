@@ -4,7 +4,7 @@ public class ToDo
 {
     public Guid Id { get; set; }
     public string Title { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
+    public string Notes { get; set; } = string.Empty;
     public Guid StateId { get; set; }
     public required ToDoState State { get; set; } 
     public IEnumerable<Tag> Tags { get; set; } = new List<Tag>();

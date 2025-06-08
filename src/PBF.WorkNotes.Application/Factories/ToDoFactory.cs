@@ -17,7 +17,7 @@ public class ToDoFactory : IToDoFactory
         {
             Id = _guidProvider.GetGuid(),
             Title = string.Empty,
-            Description = string.Empty,
+            Notes = string.Empty,
             State = new ToDoState { Name = "Active" },
             Tags = new List<Tag>(),
             Priority = new Priority { Name = "None" },

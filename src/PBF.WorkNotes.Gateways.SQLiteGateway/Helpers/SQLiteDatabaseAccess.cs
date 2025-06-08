@@ -1,23 +1,13 @@
 ﻿namespace PBF.WorkNotes.Gateways.SQLiteGateway.Helpers;
 
-public interface IDatabaseAccess<M> : IDisposable
-{
-    IDbConnection OpenConnection();
-    void CloseConnection();
-    Task<IEnumerable<M>> QueryAsync(string sql);
-    Task<M?> QuerySingleOrDefaultAsync(string sql, DynamicParameters parameters);
-    Task<Guid> InsertAndGetIdAsync(string sql, DynamicParameters parameters);
-    Task<int> ExecuteAsync(string sql, DynamicParameters parameters);
-}
-
 public  class SQLiteDatabaseAccess<M>: IDatabaseAccess<M>
 {
     private readonly AppSettings _settings;
-    private IDbConnection _connection;
+    protected IDbConnection _connection;
 
-    public SQLiteDatabaseAccess(AppSettings settings)
+    public SQLiteDatabaseAccess(ISettingsProvider settingsProvider)
     {
-        _settings = settings;
+        _settings = settingsProvider.Settings;
     }
 
     public IDbConnection OpenConnection()

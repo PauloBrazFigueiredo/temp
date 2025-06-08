@@ -7,7 +7,7 @@ public class BaseSQLiteRepositoryUnitTests
     {
         var config = new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile<MappingProfile>();
+            cfg.AddProfile<SQLiteGatewayMappingProfile>();
         });
         return config.CreateMapper();
     }

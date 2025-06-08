@@ -1,18 +1,10 @@
-﻿namespace PBF.WorkNotes.UI;
+﻿namespace PBF.WorkNotes.UI.Views;
 
 public partial class MainWindow : Window
 {
-    private readonly IToDoStatesRepository _toDoStateRepository;
-
-    public MainWindow()
+    public MainWindow(MainWindowViewModel viewModel)
     {
         InitializeComponent();
-
-        //DataContext = new MainWindowViewModel();
-    }
-
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-        var t = _toDoStateRepository.GetAll();
+        DataContext = viewModel;
     }
 }

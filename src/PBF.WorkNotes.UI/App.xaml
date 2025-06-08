@@ -1,8 +1,48 @@
-﻿<Application x:Class="PBF.WorkNotes.UI.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:PBF.WorkNotes.UI">
+﻿<Application x:Class="PBF.WorkNotes.UI.App"  
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"  
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
+             xmlns:local="clr-namespace:PBF.WorkNotes.UI"  
+             xmlns:helpers="clr-namespace:PBF.WorkNotes.UI.Helpers" 
+             xmlns:material="http://materialdesigninxaml.net/winfx/xaml/themes">  
     <Application.Resources>
-         
-    </Application.Resources>
+        <ResourceDictionary>
+            <!-- Merge Material Design Resources -->
+            <ResourceDictionary.MergedDictionaries>
+                <!-- 1. Material Design Theme -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+
+                <!-- 2. Material Design Default Styles -->
+                <!--<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />-->
+
+                <!-- 3. Color Scheme (Indigo + Amber) -->
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Indigo.xaml" />
+                <!--<ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Amber.xaml" />-->
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Converters -->
+            <helpers:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+            <helpers:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
+            <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <helpers:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+
+            <!-- Status Message Style -->
+            <Style x:Key="StatusMessageStyle" TargetType="Border">
+                <Setter Property="Background" Value="{Binding StatusColor, Converter={StaticResource ColorToBrushConverter}}"/>
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Visibility" Value="{Binding StatusMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
+                <Setter Property="VerticalAlignment" Value="Bottom"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding StatusMessage}" Value="">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <!-- Global Font Settings -->
+            <Style TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="Segoe UI"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>  
 </Application>

@@ -23,7 +23,7 @@ public class ToDosSQLiteRepositoryIntegrationTests :  IClassFixture<ToDosSQLiteR
         var entity = new ToDo
         {
             Title = "testTitle",
-            Description = "testDescription",
+            Notes = "testNotes",
             StateId = this._states.First().Id,
             State = new ToDoState
             {
@@ -96,7 +96,7 @@ public class ToDosSQLiteRepositoryIntegrationTests :  IClassFixture<ToDosSQLiteR
         {
             Id = _fixture.TestId,
             Title = "testTitle1",
-            Description = "testDescription1",
+            Notes = "testNotes1",
             StateId = _states.First().Id,
             State = new ToDoState
             {
@@ -133,7 +133,7 @@ public class ToDosSQLiteRepositoryIntegrationTests :  IClassFixture<ToDosSQLiteR
         {
             Id = Guid.Empty,
             Title = "testTitle1",
-            Description = "testDescription1",
+            Notes = "testNotes1",
             StateId = _states.First().Id,
             State = new ToDoState
             {

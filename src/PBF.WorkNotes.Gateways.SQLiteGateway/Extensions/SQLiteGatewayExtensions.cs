@@ -4,8 +4,8 @@ public static class SQLiteGatewayExtensions
 {
     public static IServiceCollection AddSQLiteGateway(this IServiceCollection services, ISettingsProvider settingsProvider)
     {
-        services.AddTransient<SqliteConnection>(_ => new SqliteConnection(settingsProvider.GetWorkNotesDataDatabaseConnectionString()));
         SqlMapper.AddTypeHandler(new GuidTypeHandler());
+        services.AddTransient<ISettingsProvider>(_ => settingsProvider);
 
         services.AddTransient<IDatabaseAccess<ToDoStateModel>, SQLiteDatabaseAccess<ToDoStateModel>>();
         services.AddTransient<IDatabaseAccess<PriorityModel>, SQLiteDatabaseAccess<PriorityModel>>();

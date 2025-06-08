@@ -47,7 +47,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             SELECT
                 Id,
                 Title,
-                Description,
+                Notes,
                 StateId,
                 PriorityId,
                 "Order",
@@ -77,7 +77,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             SELECT
                 Id,
                 Title,
-                Description,
+                Notes,
                 StateId,
                 PriorityId,
                 "Order",
@@ -112,7 +112,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             SELECT
                 Id,
                 Title,
-                Description,
+                Notes,
                 StateId,
                 PriorityId,
                 "Order",
@@ -137,7 +137,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
         var entity = new ToDo
         { 
             Title = "testTitle",
-            Description = "testDescription",
+            Notes = "testNotes",
             StateId = stateId,
             State = new ToDoState
             {
@@ -169,12 +169,12 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
 
         // Assert
         mockDatabaseAccess.Verify(mock => mock.ExecuteAsync("""
-            INSERT INTO ToDos ("Id", "Title", "Description", "StateId", "PriorityId", "Order", "WorkDate", "DueDate", "CreatedDate")
-            VALUES (@Id, @Title, @Description, @StateId, @PriorityId, @Order, @WorkDate, @DueDate, @CreatedDate)
+            INSERT INTO ToDos ("Id", "Title", "Notes", "StateId", "PriorityId", "Order", "WorkDate", "DueDate", "CreatedDate")
+            VALUES (@Id, @Title, @Notes, @StateId, @PriorityId, @Order, @WorkDate, @DueDate, @CreatedDate)
         """,
             It.Is<DynamicParameters>(p =>
                 p.Get<string>("Title") == entity.Title
-                && p.Get<string>("Description") == entity.Description
+                && p.Get<string>("Notes") == entity.Notes
                 && p.Get<Guid>("StateId") == entity.StateId
                 && p.Get<Guid>("PriorityId") == entity.PriorityId
                 && p.Get<int>("Order") == entity.Order
@@ -195,7 +195,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
         {
             Id = id,
             Title = "testTitle",
-            Description = "testDescription",
+            Notes = "testNotes",
             StateId = stateId,
             State = new ToDoState
             {
@@ -229,7 +229,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
         mockDatabaseAccess.Verify(mock => mock.ExecuteAsync("""
             UPDATE ToDos
             SET Title = @Title,
-                Description = @Description,
+                Notes = @Notes,
                 StateId = @StateId,
                 PriorityId = @PriorityId,
                 "Order" = @Order,
@@ -241,7 +241,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             It.Is<DynamicParameters>(p =>
                 p.Get<Guid>("Id") == entity.Id
                 && p.Get<string>("Title") == entity.Title
-                && p.Get<string>("Description") == entity.Description
+                && p.Get<string>("Notes") == entity.Notes
                 && p.Get<Guid>("StateId") == entity.StateId
                 && p.Get<Guid>("PriorityId") == entity.PriorityId
                 && p.Get<int>("Order") == entity.Order
@@ -263,7 +263,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
         {
             Id = id,
             Title = "testTitle",
-            Description = "testDescription",
+            Notes = "testNotes",
             StateId = stateId,
             State = new ToDoState
             {
@@ -297,7 +297,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
         mockDatabaseAccess.Verify(mock => mock.ExecuteAsync("""
             UPDATE ToDos
             SET Title = @Title,
-                Description = @Description,
+                Notes = @Notes,
                 StateId = @StateId,
                 PriorityId = @PriorityId,
                 "Order" = @Order,
@@ -309,7 +309,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             It.Is<DynamicParameters>(p =>
                 p.Get<Guid>("Id") == entity.Id
                 && p.Get<string>("Title") == entity.Title
-                && p.Get<string>("Description") == entity.Description
+                && p.Get<string>("Notes") == entity.Notes
                 && p.Get<Guid>("StateId") == entity.StateId
                 && p.Get<Guid>("PriorityId") == entity.PriorityId
                 && p.Get<int>("Order") == entity.Order

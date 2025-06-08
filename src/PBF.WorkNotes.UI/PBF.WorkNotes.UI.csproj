@@ -9,16 +9,37 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\Kynetix_Logo-2048x616.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="FluentMigrator" Version="7.1.0" />
+    <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
+    <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
+    <PackageReference Include="MaterialDesignThemes.Wpf" Version="1.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.3" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.3" />
+    <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
+    <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PBF.WorkNotes.Gateways.SQLiteGateway\PBF.WorkNotes.Gateways.SQLiteGateway.csproj" />
     <ProjectReference Include="..\PBF.WorkNotes.Gateways.SQLiteMigrator\PBF.WorkNotes.Gateways.SQLiteMigrator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\Kynetix_Logo-2048x616.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

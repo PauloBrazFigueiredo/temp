@@ -11,3 +11,4 @@ global using PBF.WorkNotes.Domain.Entities;
 global using PBF.WorkNotes.Gateways.SQLiteGateway.Helpers;
 global using PBF.WorkNotes.Gateways.SQLiteGateway.Models;
 global using PBF.WorkNotes.Gateways.SQLiteGateway.Repositories;
+global using PBF.WorkNotes.Gateways.SQLiteGateway.Helpers.Interfaces;

@@ -1,8 +1,8 @@
 ﻿namespace PBF.WorkNotes.Gateways.SQLiteGateway.Helpers;
 
-public class MappingProfile : Profile
+public class SQLiteGatewayMappingProfile : Profile
 {
-    public MappingProfile()
+    public SQLiteGatewayMappingProfile()
     {
         CreateMap<ToDoState, ToDoStateModel>();
         CreateMap<ToDoStateModel, ToDoState>();

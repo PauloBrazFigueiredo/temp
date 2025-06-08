@@ -8,7 +8,7 @@ public class Migration_2025052501 : Migration
         Create.Table("ToDos")
             .WithColumn("Id").AsGuid().PrimaryKey()
             .WithColumn("Title").AsString()
-            .WithColumn("Description").AsString()
+            .WithColumn("Notes").AsString()
             .WithColumn("StateId").AsGuid()
                 .ForeignKey("FK_ToDoStates_Id", "ToDoStates", "Id")
             .WithColumn("PriorityId").AsGuid()

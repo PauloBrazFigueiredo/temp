@@ -2,9 +2,9 @@
 
 public class TestViewModel : INotifyPropertyChanged
 {
-    private readonly IToDoStateService _toDoStateService;
+    private readonly IToDoStatesService _toDoStateService;
 
-    public TestViewModel(IToDoStateService toDoStateService)
+    public TestViewModel(IToDoStatesService toDoStateService)
     {
         _toDoStateService = toDoStateService;
     }

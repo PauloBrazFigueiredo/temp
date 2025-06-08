@@ -38,7 +38,7 @@ public class ToDoFactoryUnitTests
         result.Should().BeOfType<ToDo>();
         result.Id.Should().NotBeEmpty();
         result.Title.Should().BeEmpty();
-        result.Description.Should().BeEmpty();
+        result.Notes.Should().BeEmpty();
         result.State.Should().BeOfType<ToDoState>();
         //TODO: Implement StateRepository
         //result.State.Id.Should().Be("Active");

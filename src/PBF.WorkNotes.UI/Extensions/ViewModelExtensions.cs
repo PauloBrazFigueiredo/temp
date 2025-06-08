@@ -4,7 +4,9 @@ public static class ViewModelExtensions
 {
     public static IServiceCollection AddViewModels(this IServiceCollection services)
     {
-        services.AddTransient<TestViewModel>();
+        services.AddTransient<MainWindowViewModel>();
+        services.AddTransient<HomeViewModel>();
+        services.AddTransient<ToDoViewModel>();
 
         return services;
     }

@@ -2,4 +2,5 @@
 
 public interface IGetAllToDoStatesUseCase
 {
+    Task<IEnumerable<ToDoState>> Execute();
 }
