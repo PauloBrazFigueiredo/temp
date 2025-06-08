@@ -21,16 +21,6 @@ public class ToDoViewModel : ViewModelBase
         _toDoService = toDoService;
         InitializeAsync();
 
-        
-
-        //_getAllPrioritiesUseCase.Execute().ContinueWith(task =>
-        //{
-        //    if (task.IsCompletedSuccessfully)
-        //    {
-        //        Priorities = new ObservableCollection<Priority>(task.Result.ToList<Priority>());
-        //        SelectedPriority = Priorities.FirstOrDefault();
-        //    }
-        //});
         //AddCommand = new RelayCommand(ExecuteAddCommand);
         //EditCommand = new RelayCommand(ExecuteEditCommand);
         //DeleteCommand = new RelayCommand(ExecuteDeleteCommand);
@@ -107,7 +97,7 @@ public class ToDoViewModel : ViewModelBase
     //    throw new NotImplementedException();
     //}
 
-
+    #region Notes
 
     private RichTextBox _rtb;
 
@@ -125,27 +115,6 @@ public class ToDoViewModel : ViewModelBase
         set => SetProperty(ref _isItalic, value);
     }
 
-    //private ICommand _toggleBoldCommand;
-    //public ICommand ToggleBoldCommand => _toggleBoldCommand ??= new RelayCommand(ToggleBold);
-    //private void ToggleBold()
-    //{
-    //    if (_rtb?.Selection == null) return;
-
-    //    var fontWeight = IsBold ? FontWeights.Normal : FontWeights.Bold;
-    //    _rtb.Selection.ApplyPropertyValue(TextElement.FontWeightProperty, fontWeight);
-    //    IsBold = !IsBold;
-    //}
-
-    //private ICommand _toggleItalicCommand;
-    //public ICommand ToggleItalicCommand => _toggleItalicCommand ??= new RelayCommand(ToggleItalic);
-    //private void ToggleItalic()
-    //{
-    //    if (_rtb?.Selection == null) return;
-    //    var fontStyle = IsItalic ? FontStyles.Normal : FontStyles.Italic;
-    //    _rtb.Selection.ApplyPropertyValue(TextElement.FontStyleProperty, fontStyle);
-    //    IsItalic = !IsItalic;
-    //}
-
     public void SetRichTextBox(RichTextBox rtb)
     {
         _rtb = rtb;
@@ -159,7 +128,6 @@ public class ToDoViewModel : ViewModelBase
 
         System.Windows.Application.Current.Dispatcher.Invoke(() =>
         {
-            // Get current formatting from selected text
             var fontWeight = _rtb.Selection.GetPropertyValue(TextElement.FontWeightProperty);
             IsBold = fontWeight != DependencyProperty.UnsetValue && fontWeight.Equals(FontWeights.Bold);
 
@@ -209,4 +177,6 @@ public class ToDoViewModel : ViewModelBase
             return System.Text.Encoding.UTF8.GetString(stream.ToArray());
         }
     }
+
+    #endregion Notes
 }
