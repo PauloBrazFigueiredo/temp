@@ -1,6 +1,6 @@
 ﻿namespace PBF.WorkNotes.UI.Models;
 
-public class ToDo : INotifyPropertyChanged
+public class ToDoItem : INotifyPropertyChanged
 {
     private Guid _id;
     public Guid Id
@@ -22,7 +22,7 @@ public class ToDo : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-
+    /*
     private Priority _priority;
     public Priority Priority
     {
@@ -88,7 +88,7 @@ public class ToDo : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-
+    */
     public event PropertyChangedEventHandler PropertyChanged;
 
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

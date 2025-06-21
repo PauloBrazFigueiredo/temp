@@ -50,6 +50,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
                 Notes,
                 StateId,
                 PriorityId,
+                IsPrivate,
                 "Order",
                 WorkDate,
                 DueDate,
@@ -80,6 +81,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
                 Notes,
                 StateId,
                 PriorityId,
+                IsPrivate,
                 "Order",
                 WorkDate,
                 DueDate,
@@ -115,6 +117,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
                 Notes,
                 StateId,
                 PriorityId,
+                IsPrivate,
                 "Order",
                 WorkDate,
                 DueDate,
@@ -153,10 +156,10 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
                 Color = "#FFFFFF",
                 IsDefault = false
             },
+            IsPrivate = false,
             Order = 1,
             WorkDate = new DateTime(2023, 10, 1),
-            DueDate = new DateTime(2023, 10, 2),
-            CreatedDate = new DateTime(2023, 10, 3)
+            DueDate = new DateTime(2023, 10, 2)
         };
 
         var mockDatabaseAccess = new Mock<IDatabaseAccess<ToDoModel>>();
@@ -168,19 +171,20 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
         var result = await sut.Create(entity);
 
         // Assert
-        mockDatabaseAccess.Verify(mock => mock.ExecuteAsync("""
-            INSERT INTO ToDos ("Id", "Title", "Notes", "StateId", "PriorityId", "Order", "WorkDate", "DueDate", "CreatedDate")
-            VALUES (@Id, @Title, @Notes, @StateId, @PriorityId, @Order, @WorkDate, @DueDate, @CreatedDate)
-        """,
-            It.Is<DynamicParameters>(p =>
+        mockDatabaseAccess.Verify(mock => mock.ExecuteAsync(It.Is<string>(sql => sql.Contains("""
+            INSERT INTO ToDos ("Id", "Title", "Notes", "StateId", "PriorityId", "IsPrivate", "Order", "WorkDate", "DueDate", "CreatedDate")
+            VALUES (@Id, @Title, @Notes, @StateId, @PriorityId, @IsPrivate, @Order, @WorkDate, @DueDate, @CreatedDate)
+        """)),
+        //It.IsAny<DynamicParameters >()
+        It.Is<DynamicParameters>(p =>
                 p.Get<string>("Title") == entity.Title
                 && p.Get<string>("Notes") == entity.Notes
                 && p.Get<Guid>("StateId") == entity.StateId
                 && p.Get<Guid>("PriorityId") == entity.PriorityId
+                && p.Get<bool>("IsPrivate") == entity.IsPrivate
                 && p.Get<int>("Order") == entity.Order
                 && p.Get<DateTime>("WorkDate") == entity.WorkDate
-                && p.Get<DateTime>("DueDate") == entity.DueDate
-                && p.Get<DateTime>("CreatedDate") == entity.CreatedDate)),
+                && p.Get<DateTime>("DueDate") == entity.DueDate)),
             Times.Once);
     }
 
@@ -211,6 +215,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
                 Color = "#FFFFFF",
                 IsDefault = false
             },
+            IsPrivate = false,
             Order = 1,
             WorkDate = new DateTime(2023, 10, 1),
             DueDate = new DateTime(2023, 10, 2),
@@ -232,6 +237,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
                 Notes = @Notes,
                 StateId = @StateId,
                 PriorityId = @PriorityId,
+                IsPrivate = @IsPrivate,
                 "Order" = @Order,
                 WorkDate = @WorkDate,
                 DueDate = @DueDate,
@@ -244,6 +250,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
                 && p.Get<string>("Notes") == entity.Notes
                 && p.Get<Guid>("StateId") == entity.StateId
                 && p.Get<Guid>("PriorityId") == entity.PriorityId
+                && p.Get<bool>("IsPrivate") == entity.IsPrivate
                 && p.Get<int>("Order") == entity.Order
                 && p.Get<DateTime>("WorkDate") == entity.WorkDate
                 && p.Get<DateTime>("DueDate") == entity.DueDate
@@ -279,6 +286,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
                 Color = "#FFFFFF",
                 IsDefault = false
             },
+            IsPrivate = false,
             Order = 1,
             WorkDate = new DateTime(2023, 10, 1),
             DueDate = new DateTime(2023, 10, 2),
@@ -300,6 +308,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
                 Notes = @Notes,
                 StateId = @StateId,
                 PriorityId = @PriorityId,
+                IsPrivate = @IsPrivate,
                 "Order" = @Order,
                 WorkDate = @WorkDate,
                 DueDate = @DueDate,
@@ -312,6 +321,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
                 && p.Get<string>("Notes") == entity.Notes
                 && p.Get<Guid>("StateId") == entity.StateId
                 && p.Get<Guid>("PriorityId") == entity.PriorityId
+                && p.Get<bool>("IsPrivate") == entity.IsPrivate
                 && p.Get<int>("Order") == entity.Order
                 && p.Get<DateTime>("WorkDate") == entity.WorkDate
                 && p.Get<DateTime>("DueDate") == entity.DueDate

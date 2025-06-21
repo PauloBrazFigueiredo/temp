@@ -74,7 +74,7 @@ public class ToDoStatesSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             WHERE Id = @Id
         """, 
             It.Is<DynamicParameters>(p =>
-                p.Get<Guid>("Id") ==id)),
+                p.Get<Guid>("Id") == id)),
             Times.Once);
         result.Should().NotBeNull();
     }

@@ -1,55 +1,58 @@
-﻿using System.IO;
-using System.Windows.Controls;
-using System.Windows.Documents;
+﻿using System.Collections;
 
 namespace PBF.WorkNotes.UI.ViewModels;
 
 public class ToDoViewModel : ViewModelBase
 {
-    private readonly IToDoService _toDoService;
+    private readonly IValidator<ToDo> _validator;
+    private readonly IToDosService _toDosService;
     private readonly IPrioritiesService _prioritiesService;
     private readonly IToDoStatesService _toDoStatesService;
 
     public ToDoViewModel(
-        MainViewModel mainViewModel,
+        MainWindowViewModel mainWindowViewModel,
         IPrioritiesService prioritiesService,
         IToDoStatesService toDoStatesService,
-        IToDoService toDoService) : base(mainViewModel)
+        IToDosService toDosService) : base(mainWindowViewModel)
     {
         _prioritiesService = prioritiesService;
         _toDoStatesService = toDoStatesService;
-        _toDoService = toDoService;
+        _toDosService = toDosService;
+        _validator = new ToDoValidator();
         InitializeAsync();
 
         //AddCommand = new RelayCommand(ExecuteAddCommand);
         //EditCommand = new RelayCommand(ExecuteEditCommand);
         //DeleteCommand = new RelayCommand(ExecuteDeleteCommand);
         //NewCommand = new RelayCommand(ExecuteNewCommand);
-
-        SaveCommand = new RelayCommand(ExecuteSaveCommand);
-    }
-
-    private void ExecuteSaveCommand(object obj)
-    {
-        throw new NotImplementedException();
     }
 
     private async void InitializeAsync()
     {
         var priorities = await _prioritiesService.GetAllPrioritiesAsync();
         Priorities = new ObservableCollection<Priority>(priorities);
-        ToDo.Priority = Priorities.Single(p => p.IsDefault);
-
         var states = await _toDoStatesService.GetAllToDoStatesAsync();
         States = new ObservableCollection<ToDoState>(states);
-        ToDo.State = States.Single(p => p.IsDefault);
+
+        if (Mode == ViewModelMode.Create)
+        {
+            ToDo = new ToDo
+            {
+                Priority = Priorities.Single(p => p.IsDefault),
+                State = States.Single(p => p.IsDefault)
+            };
+            CanSave = true;
+        }
     }
 
     private ToDo _toDo = new ToDo();
     public ToDo ToDo
     {
         get => _toDo;
-        set => SetProperty<ToDo>(ref _toDo, value);
+        set
+        {
+            SetProperty<ToDo>(ref _toDo, value);
+        }
     }
 
     private ObservableCollection<Priority> _priorities;
@@ -66,10 +69,65 @@ public class ToDoViewModel : ViewModelBase
         set => SetProperty<ObservableCollection<ToDoState>>(ref _states, value);
     }
 
-    public ICommand SaveCommand { get; }
-    private void ExecuteSaveCommand()
+    private bool _canSave = true;
+    public bool CanSave
+    {
+        get => _canSave;
+        set
+        {
+            _canSave = value;
+            OnPropertyChanged(nameof(CanSave));
+        }
+    }
+
+    public ICommand SaveCommand => new RelayCommand(ExecuteSaveCommand);
+    private async Task ExecuteSaveCommand()
+    {
+        if (Validate())
+        {
+            if (Mode == ViewModelMode.Create)
+            {
+                var result =  await _toDosService.CreateAsync(ToDo);
+                if (result is not null)
+                {
+                    ToDo = await _toDosService.GetByIdAsync(result.Value);
+                    Mode = ViewModelMode.Edit;
+                    _mainWindowViewModel.ShowSuccess($"To-Do item created successfully (Id: {ToDo.Id}).");
+                }
+                else
+                {
+                    _mainWindowViewModel.ShowError($"Error creating To-Do item.");
+                }
+            }
+            else if (Mode == ViewModelMode.Edit)
+            {
+                var result = await _toDosService.UpdateAsync(ToDo);
+                if (result)
+                {
+                    _mainWindowViewModel.ShowSuccess($"To-Do item updated successfully (Id: {ToDo.Id}).");
+                }
+                else
+                {
+                    _mainWindowViewModel.ShowError($"Error updating To-Do item (Id: {ToDo.Id}).");
+                }
+            }
+        }
+    }
+
+    public ICommand CancelCommand => new RelayCommand(ExecuteCancelCommand);
+    private void ExecuteCancelCommand()
     {
         var a = string.Empty;
+    }
+
+    private bool Validate()
+    {
+        foreach (var error in _validator.Validate(ToDo).Errors)
+        {
+            _mainWindowViewModel.ShowError(error.ErrorMessage);
+            return false;
+        }
+        return true;
     }
 
     //public ICommand AddCommand { get; }
@@ -121,6 +179,9 @@ public class ToDoViewModel : ViewModelBase
     }
 
     private ICommand _selectionChangedCommand;
+
+    public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
+
     public ICommand SelectionChangedCommand => _selectionChangedCommand ??= new RelayCommand(UpdateFormatting);
     private void UpdateFormatting()
     {
@@ -176,6 +237,11 @@ public class ToDoViewModel : ViewModelBase
             range.Save(stream, DataFormats.Rtf);
             return System.Text.Encoding.UTF8.GetString(stream.ToArray());
         }
+    }
+
+    public IEnumerable GetErrors(string? propertyName)
+    {
+        throw new NotImplementedException();
     }
 
     #endregion Notes

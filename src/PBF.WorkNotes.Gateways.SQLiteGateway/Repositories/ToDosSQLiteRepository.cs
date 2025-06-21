@@ -15,6 +15,7 @@ public class ToDosSQLiteRepository(
                 Notes,
                 StateId,
                 PriorityId,
+                IsPrivate,
                 "Order",
                 WorkDate,
                 DueDate,
@@ -34,6 +35,7 @@ public class ToDosSQLiteRepository(
                 Notes,
                 StateId,
                 PriorityId,
+                IsPrivate,
                 "Order",
                 WorkDate,
                 DueDate,
@@ -51,10 +53,11 @@ public class ToDosSQLiteRepository(
     public async Task<Guid> Create(ToDo entity)
     {
         var sql = """
-            INSERT INTO ToDos ("Id", "Title", "Notes", "StateId", "PriorityId", "Order", "WorkDate", "DueDate", "CreatedDate")
-            VALUES (@Id, @Title, @Notes, @StateId, @PriorityId, @Order, @WorkDate, @DueDate, @CreatedDate)
+            INSERT INTO ToDos ("Id", "Title", "Notes", "StateId", "PriorityId", "IsPrivate", "Order", "WorkDate", "DueDate", "CreatedDate")
+            VALUES (@Id, @Title, @Notes, @StateId, @PriorityId, @IsPrivate, @Order, @WorkDate, @DueDate, @CreatedDate)
         """;
         var model = mapper.Map<ToDoModel>(entity);
+        model.CreatedDate = DateTime.UtcNow;
         var parameters = new DynamicParameters();
         var id = guidProvider.GetGuid();
         parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
@@ -62,6 +65,7 @@ public class ToDosSQLiteRepository(
         parameters.Add("Notes", model.Notes, DbType.String, ParameterDirection.Input);
         parameters.Add("StateId", model.StateId, DbType.Guid, ParameterDirection.Input);
         parameters.Add("PriorityId", model.PriorityId, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("IsPrivate", model.IsPrivate, DbType.Boolean, ParameterDirection.Input);
         parameters.Add("Order", model.Order, DbType.Int32, ParameterDirection.Input);
         parameters.Add("WorkDate", model.WorkDate, DbType.DateTime, ParameterDirection.Input);
         parameters.Add("DueDate", model.DueDate, DbType.DateTime, ParameterDirection.Input);
@@ -79,6 +83,7 @@ public class ToDosSQLiteRepository(
                 Notes = @Notes,
                 StateId = @StateId,
                 PriorityId = @PriorityId,
+                IsPrivate = @IsPrivate,
                 "Order" = @Order,
                 WorkDate = @WorkDate,
                 DueDate = @DueDate,
@@ -92,6 +97,7 @@ public class ToDosSQLiteRepository(
         parameters.Add("Notes", entity.Notes, DbType.String, ParameterDirection.Input);
         parameters.Add("StateId", entity.StateId, DbType.Guid, ParameterDirection.Input);
         parameters.Add("PriorityId", entity.PriorityId, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("IsPrivate", model.IsPrivate, DbType.Boolean, ParameterDirection.Input);
         parameters.Add("Order", entity.Order, DbType.Int32, ParameterDirection.Input);
         parameters.Add("WorkDate", entity.WorkDate, DbType.DateTime, ParameterDirection.Input);
         parameters.Add("DueDate", entity.DueDate, DbType.DateTime, ParameterDirection.Input);

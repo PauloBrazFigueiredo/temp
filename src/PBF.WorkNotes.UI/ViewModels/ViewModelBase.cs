@@ -1,63 +1,17 @@
 ﻿namespace PBF.WorkNotes.UI.ViewModels;
-/*
-public class ViewModelBase : INotifyPropertyChanged, IDisposable
-{
-    protected MainViewModel _mainViewModel;
-    public event PropertyChangedEventHandler PropertyChanged;
 
-    public ViewModelBase(MainViewModel mainViewModel)
-    {
-        _mainViewModel = mainViewModel;
-    }
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = "")
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
-    {
-        if (EqualityComparer<T>.Default.Equals(field, value))
-        {
-            return false;
-        }
-        field = value;
-        OnPropertyChanged(propertyName);
-        return true;
-    }
-
-    private bool _disposed;
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (_disposed) return;
-
-        if (disposing)
-        {
-            // Dispose managed resources here
-        }
-
-        _disposed = true;
-    }
-
-    ~ViewModelBase()
-    {
-        Dispose(false);
-    }
-}
-*/
 public abstract class ViewModelBase : INotifyPropertyChanged
 {
-    protected MainViewModel _mainViewModel;
+    protected MainWindowViewModel _mainWindowViewModel;
+    public ViewModelMode Mode { get; set; }
 
-    protected ViewModelBase(MainViewModel mainViewModel)
+    protected ViewModelBase()
     {
-        _mainViewModel = mainViewModel;
+    }
+
+    protected ViewModelBase(MainWindowViewModel mainWindowViewModel)
+    {
+        _mainWindowViewModel = mainWindowViewModel;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -68,7 +22,10 @@ public abstract class ViewModelBase : INotifyPropertyChanged
 
     protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
     {
-        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        if (EqualityComparer<T>.Default.Equals(field, value))
+        {
+            return false;
+        }
         field = value;
         OnPropertyChanged(propertyName);
         return true;

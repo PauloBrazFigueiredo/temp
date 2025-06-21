@@ -1,12 +1,7 @@
-﻿using PBF.WorkNotes.Application.UseCases;
-using PBF.WorkNotes.Gateways.SQLiteGateway.Helpers;
-using AutoMapper.Internal;
-namespace PBF.WorkNotes.UI;
+﻿namespace PBF.WorkNotes.UI;
 
 public partial class App : System.Windows.Application
 {
-    //public IServiceProvider? ServiceProvider { get; set; }
-
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
@@ -33,15 +28,13 @@ public partial class App : System.Windows.Application
         services.AddSingleton<IMapper>(new Mapper(config));
 
         services.AddSQLiteGateway(settingsProvider);
+        services.AddUseCases();
         services.AddServices();
         services.AddViewModels();
 
-        services.AddTransient<IGetAllPrioritiesUseCase, GetAllPrioritiesUseCase>();
-        services.AddTransient<IGetAllToDoStatesUseCase, GetAllToDoStatesUseCase>();
-
         services.AddTransient<IGuidProvider, GuidProvider>();
 
-        services.AddSingleton<MainViewModel>();
+        services.AddSingleton<MainWindowViewModel>();
         services.AddSingleton<MainWindow>();
     }
 

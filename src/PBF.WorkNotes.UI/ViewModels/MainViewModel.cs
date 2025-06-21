@@ -1,4 +1,4 @@
-﻿namespace PBF.WorkNotes.UI.ViewModels;
+﻿/*namespace PBF.WorkNotes.UI.ViewModels;
 
 public class MainViewModel : INotifyPropertyChanged, IDisposable
 {
@@ -131,7 +131,8 @@ public class MainViewModel : INotifyPropertyChanged, IDisposable
 
     public void ShowError(string message)
     {
-        SetStatus(PackIconKind.CloseCircle, Brushes.Red, message, 0);
+        SetStatus(PackIconKind.Information, Brushes.Blue, message, 3);
+        //SetStatus(PackIconKind.CloseCircle, Brushes.Red, message, 5);
     }
 
     public void ShowInfo(string message)
@@ -179,3 +180,4 @@ public class MainViewModel : INotifyPropertyChanged, IDisposable
         Dispose(false);
     }
 }
+*/

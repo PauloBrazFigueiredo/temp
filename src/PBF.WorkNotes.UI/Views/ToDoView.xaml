@@ -9,7 +9,7 @@
              xmlns:vm="clr-namespace:PBF.WorkNotes.UI.ViewModels"
              xmlns:local="clr-namespace:PBF.WorkNotes.UI.Helpers"
              mc:Ignorable="d">
-    <Border BorderBrush="LightGray" BorderThickness="1" Padding="10">
+    <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" Background="{Binding ToDo.Priority.Color}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -30,21 +30,21 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Text="{Binding ToDo.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5"/>
+                <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Text="{Binding ToDo.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SpellCheck.IsEnabled="True" Margin="0,0,0,5"/>
                 <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Text="State:" Margin="0,0,10,5"/>
-                <ComboBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" ItemsSource="{Binding States}" SelectedItem="{Binding ToDo.State, Mode=TwoWay}" DisplayMemberPath="Name" Width="180" Margin="0,0,0,5"/>
+                <ComboBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" ItemsSource="{Binding States}" SelectedItem="{Binding ToDo.State, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" Width="180" Margin="0,0,0,5"/>
                 <TextBlock Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Text="Priority:" Margin="0,0,10,5"/>
-                <ComboBox Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Left" ItemsSource="{Binding Priorities}" SelectedItem="{Binding ToDo.Priority, Mode=TwoWay}" DisplayMemberPath="Name" Width="180" Margin="0,0,0,5"/>
-                <TextBlock Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" Text="Is Public:" Margin="0,0,10,5"/>
-                <CheckBox Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <ComboBox Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Left" ItemsSource="{Binding Priorities}" SelectedItem="{Binding ToDo.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" Width="180" Margin="0,0,0,5"/>
+                <TextBlock Grid.Row="1" Grid.Column="4" VerticalAlignment="Center" Text="Is Private:" Margin="0,0,10,5"/>
+                <CheckBox Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Left" IsChecked="{Binding ToDo.IsPrivate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Text="Work Date:" Margin="0,0,10,5"/>
-                <DatePicker Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding ToDo.WorkDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="180" Margin="0,0,0,5"/>
+                <DatePicker Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" SelectedDate="{Binding ToDo.WorkDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="180" Margin="0,0,0,5"/>
                 <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Text="Due Date:" Margin="0,0,10,5"/>
-                <DatePicker Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding ToDo.DueDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="180" Margin="0,0,0,5"/>
+                <DatePicker Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Left" SelectedDate="{Binding ToDo.DueDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Width="180" Margin="0,0,0,5"/>
                 <TextBlock Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" Text="Created Date:" Margin="0,0,10,5"/>
-                <DatePicker Grid.Row="2" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding ToDo.CreatedDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="180" Margin="0,0,0,5"/>
+                <TextBlock Grid.Row="2" Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding ToDo.CreatedDate}" Width="180" Margin="0,0,0,5"/>
                 <ScrollViewer Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Auto">
-                    <RichTextBox x:Name="richTextBox"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="RichTextBoxSelectionChanged">
+                    <RichTextBox x:Name="richTextBox"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="RichTextBoxSelectionChanged" SpellCheck.IsEnabled="True">
                         <i:Interaction.Behaviors>
                             <local:RichTextBoxDocumentBehavior Document="{Binding FormattedDocumentContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </i:Interaction.Behaviors>
@@ -57,7 +57,7 @@
                 </ScrollViewer>
             </Grid>
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5">
-                <Button Content="Save" Command="{Binding SaveCommand}" Width="100" Margin="0,0"/>
+                <Button Content="Save" Command="{Binding SaveCommand}" IsEnabled="{Binding CanSave}" Width="100" Margin="0,0"/>
                 <Button Content="Cancel" Command="{Binding CancelCommand}" Width="100" Margin="5,0"/>
             </StackPanel>
         </Grid>

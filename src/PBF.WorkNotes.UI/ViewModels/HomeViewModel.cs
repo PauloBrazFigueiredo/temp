@@ -2,7 +2,7 @@
 
 public class HomeViewModel : ViewModelBase
 {
-    public HomeViewModel(MainViewModel mainViewModel) : base(mainViewModel)
+    public HomeViewModel() : base()
     {
     }
 }

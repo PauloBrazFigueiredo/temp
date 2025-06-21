@@ -24,7 +24,7 @@ public partial class ToDoView : UserControl
 
     private void RichTextBoxSelectionChanged(object sender, RoutedEventArgs e)
     {
-        if (DataContext is MainViewModel vm)
+        if (DataContext is MainWindowViewModel vm)
         {
             (DataContext as ToDoViewModel).SelectionChangedCommand.Execute(null);
         }

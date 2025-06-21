@@ -9,6 +9,7 @@ public class ToDoModel
     public IEnumerable<Tag> Tags { get; set; } = new List<Tag>();
     public Guid PriorityId { get; set; }
     public int? Order { get; set; }
+    public bool IsPrivate { get; set; }
     public DateTime? WorkDate { get; set; }
     public DateTime? DueDate { get; set; }
     public DateTime CreatedDate { get; set; }

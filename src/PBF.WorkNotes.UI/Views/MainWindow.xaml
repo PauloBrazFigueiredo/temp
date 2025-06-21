@@ -19,6 +19,14 @@
         <Menu Grid.Row="0" Padding="5" Background="#f0f0f0" BorderBrush="#ddd">
             <MenuItem Header="File">
             </MenuItem>
+            <MenuItem Header="To-Do">
+                <MenuItem Header="Show To-Do's" 
+                    Command="{Binding SwitchViewCommand}"
+                    CommandParameter="ToDos"/>
+                <MenuItem Header="Create To-Do" 
+                    Command="{Binding SwitchViewCommand}"
+                    CommandParameter="NewToDo"/>
+            </MenuItem>
             <MenuItem Header="View">
                 <MenuItem Header="ToDo" 
                       Command="{Binding SwitchViewCommand}"
@@ -41,6 +49,9 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type vm:ToDoViewModel}">
                     <v:ToDoView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:ToDosViewModel}">
+                    <v:ToDosView/>
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
@@ -68,6 +79,7 @@
                            VerticalAlignment="Center"
                            TextTrimming="CharacterEllipsis"/>
 
+                
                 <!--<Border
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Bottom"

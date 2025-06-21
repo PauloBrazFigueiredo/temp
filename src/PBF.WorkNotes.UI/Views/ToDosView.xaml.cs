@@ -6,4 +6,10 @@ public partial class ToDosView : UserControl
     {
         InitializeComponent();
     }
+
+    public ToDosView(ToDosViewModel viewModel)
+    {
+        InitializeComponent();
+        DataContext = viewModel;
+    }
 }

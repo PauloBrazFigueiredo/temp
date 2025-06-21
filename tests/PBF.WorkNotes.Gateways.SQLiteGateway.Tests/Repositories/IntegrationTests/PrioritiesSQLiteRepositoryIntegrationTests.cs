@@ -22,10 +22,10 @@ public class PrioritiesSQLiteRepositoryIntegrationTests :  IClassFixture<Priorit
         result.Should().NotBeNull();
         result.Should().BeOfType<List<Priority>>();
         result.Should().HaveCount(4);
-        result.Should().ContainSingle(entity => entity.Name == "Critical" && entity.Level == "P0" && entity.Color == "0xff0000" && entity.IsDefault == false);
-        result.Should().ContainSingle(entity => entity.Name == "High" && entity.Level == "P1" && entity.Color == "0xff4500" && entity.IsDefault == false);
-        result.Should().ContainSingle(entity => entity.Name == "Medium" && entity.Level == "P2" && entity.Color == "0xffd700" && entity.IsDefault == true);
-        result.Should().ContainSingle(entity => entity.Name == "Low" && entity.Level == "P3" && entity.Color == "0xa9a9a9" && entity.IsDefault == false);
+        result.Should().ContainSingle(entity => entity.Name == "Critical" && entity.Level == "P0" && entity.Color == "#e57373" && entity.IsDefault == false);
+        result.Should().ContainSingle(entity => entity.Name == "High" && entity.Level == "P1" && entity.Color == "#fff59d" && entity.IsDefault == false);
+        result.Should().ContainSingle(entity => entity.Name == "Medium" && entity.Level == "P2" && entity.Color == "#e3f2fd" && entity.IsDefault == true);
+        result.Should().ContainSingle(entity => entity.Name == "Low" && entity.Level == "P3" && entity.Color == "#eceff1" && entity.IsDefault == false);
 }
 
     [Fact, FactOrder(2)]
