@@ -12,4 +12,9 @@ public class GetToDoUseCase : IGetToDoUseCase
     {
         return await _toDosRepository.GetById(id);
     }
+
+    public async Task<IEnumerable<ToDo>> Execute()
+    {
+        return await _toDosRepository.GetAll();
+    }
 }

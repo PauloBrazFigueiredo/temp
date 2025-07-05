@@ -29,9 +29,9 @@ public class ToDoViewModel : ViewModelBase
 
     private async void InitializeAsync()
     {
-        var priorities = await _prioritiesService.GetAllPrioritiesAsync();
+        var priorities = _prioritiesService.GetAsync().ToBlockingEnumerable();
         Priorities = new ObservableCollection<Priority>(priorities);
-        var states = await _toDoStatesService.GetAllToDoStatesAsync();
+        var states = _toDoStatesService.GetAsync().ToBlockingEnumerable();
         States = new ObservableCollection<ToDoState>(states);
 
         if (Mode == ViewModelMode.Create)
@@ -90,7 +90,7 @@ public class ToDoViewModel : ViewModelBase
                 var result =  await _toDosService.CreateAsync(ToDo);
                 if (result is not null)
                 {
-                    ToDo = await _toDosService.GetByIdAsync(result.Value);
+                    ToDo = await _toDosService.GetAsync(result.Value);
                     Mode = ViewModelMode.Edit;
                     _mainWindowViewModel.ShowSuccess($"To-Do item created successfully (Id: {ToDo.Id}).");
                 }

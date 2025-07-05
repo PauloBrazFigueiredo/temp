@@ -14,6 +14,7 @@ global using AutoMapper;
 global using FluentValidation;
 global using MaterialDesignThemes.Wpf;
 global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Logging;
 global using Microsoft.Xaml.Behaviors;
 global using PBF.WorkNotes.Application.Extensions;
 global using PBF.WorkNotes.Application.Providers;

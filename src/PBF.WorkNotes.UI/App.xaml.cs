@@ -18,14 +18,22 @@ public partial class App : System.Windows.Application
         ISettingsProvider settingsProvider = new SettingsProvider();
         services.AddTransient<ISettingsProvider, SettingsProvider>();
 
-        var config = new MapperConfiguration(cfg =>
+        //var config = new MapperConfiguration(config =>
+        //{
+        //    config.AllowNullDestinationValues = true;
+        //    config.AllowNullCollections = true;
+        //    config.AddProfile<UIMappingProfile>();
+        //    config.AddProfile<SQLiteGatewayMappingProfile>();
+        //}, null);
+        //services.AddSingleton<IMapper>(new Mapper(config));
+        services.AddLogging(configure =>
         {
-            cfg.AllowNullDestinationValues = true;
-            cfg.AllowNullCollections = true;
-            cfg.AddProfile<UIMappingProfile>();
-            cfg.AddProfile<SQLiteGatewayMappingProfile>();
+            configure.AddConsole();
+            configure.AddDebug();
         });
-        services.AddSingleton<IMapper>(new Mapper(config));
+        var tempProvider = services.BuildServiceProvider();
+        var loggerFactory = tempProvider.GetRequiredService<ILoggerFactory>();
+        services.AddUIAutoMapper(loggerFactory);
 
         services.AddSQLiteGateway(settingsProvider);
         services.AddUseCases();

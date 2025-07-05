@@ -13,9 +13,12 @@ public class PrioritiesService : IPrioritiesService
         _getAllPrioritiesUseCase = getAllPrioritiesUseCase;
     }
 
-    public async Task<IEnumerable<Priority>> GetAllPrioritiesAsync()
+    public async IAsyncEnumerable<Priority> GetAsync()
     {
         var entities = await _getAllPrioritiesUseCase.Execute();
-        return _mapper.Map<IEnumerable<Priority>>(entities);
+        foreach (var entity in entities)
+        {
+            yield return _mapper.Map<Priority>(entity);
+        }
     }
 }

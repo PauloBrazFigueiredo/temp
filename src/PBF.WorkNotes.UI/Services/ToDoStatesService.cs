@@ -13,9 +13,12 @@ public class ToDoStatesService : IToDoStatesService
         _getAllToDoStatesUseCase = getAllToDoStatesUseCase;
     }
 
-    public async Task<IEnumerable<ToDoState>> GetAllToDoStatesAsync()
+    public async IAsyncEnumerable<ToDoState> GetAsync()
     {
         var entities = await _getAllToDoStatesUseCase.Execute();
-        return _mapper.Map<IEnumerable<ToDoState>>(entities);
+        foreach (var entity in entities)
+        {
+            yield return _mapper.Map<ToDoState>(entity);
+        }
     }
 }

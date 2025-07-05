@@ -2,16 +2,16 @@
 
 public static class UIAutoMapperExtensions
 {
-    public static IServiceCollection AddUIAutoMapper(this IServiceCollection services)
+    public static IServiceCollection AddUIAutoMapper(this IServiceCollection services, ILoggerFactory loggerFactory)
     {
-        services.AddAutoMapper(typeof(UIMappingProfile));
-        //var mappingConfig = new MapperConfiguration(config =>
-        //{
-        //    config.AddProfile(new MappingProfile());
-        //});
-        //IMapper mapper = mappingConfig.CreateMapper();
-        //services.AddSingleton(mapper);
-
+        var config = new MapperConfiguration(config =>
+        {
+            config.AllowNullDestinationValues = true;
+            config.AllowNullCollections = true;
+            config.AddProfile<UIMappingProfile>();
+            config.AddProfile<SQLiteGatewayMappingProfile>();
+        }, loggerFactory);
+        services.AddSingleton<IMapper>(new Mapper(config));
         return services;
     }
 }

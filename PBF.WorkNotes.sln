@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PBF.WorkNotes.Gateways.SQLi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PBF.WorkNotes.UI", "src\PBF.WorkNotes.UI\PBF.WorkNotes.UI.csproj", "{3446C23C-7FED-4367-8632-7638B0B448F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PBF.WorkNotes.UI.Tests", "tests\PBF.WorkNotes.UI.Tests\PBF.WorkNotes.UI.Tests.csproj", "{DEEB9054-AE4D-41DA-A0EB-53DFAA02CC4D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{3446C23C-7FED-4367-8632-7638B0B448F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3446C23C-7FED-4367-8632-7638B0B448F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3446C23C-7FED-4367-8632-7638B0B448F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEEB9054-AE4D-41DA-A0EB-53DFAA02CC4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEEB9054-AE4D-41DA-A0EB-53DFAA02CC4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEEB9054-AE4D-41DA-A0EB-53DFAA02CC4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEEB9054-AE4D-41DA-A0EB-53DFAA02CC4D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{31191234-179C-4204-A318-21159764973C} = {24255890-62D3-48FA-8E89-FB4BDAF991E5}
 		{30A75E26-A3BE-46AC-922B-02663303EE0A} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{3446C23C-7FED-4367-8632-7638B0B448F0} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{DEEB9054-AE4D-41DA-A0EB-53DFAA02CC4D} = {24255890-62D3-48FA-8E89-FB4BDAF991E5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {43ABFE15-4C8F-430E-9953-5C5820B8A98E}

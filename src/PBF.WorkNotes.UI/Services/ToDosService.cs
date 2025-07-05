@@ -25,7 +25,7 @@ public  class ToDosService : IToDosService
         _getToDoStateUseCase = getToDoStateUseCase;
     }
 
-    public async Task<ToDo> GetByIdAsync(Guid id)
+    public async Task<ToDo> GetAsync(Guid id)
     {
         var entity = await _getToDoUseCase.Execute(id);
         var model = _mapper.Map<ToDo>(entity);

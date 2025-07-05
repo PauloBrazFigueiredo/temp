@@ -2,7 +2,7 @@
 
 public interface IToDosService
 {
-    Task<ToDo> GetByIdAsync(Guid id);
+    Task<ToDo> GetAsync(Guid id);
     Task<Guid?> CreateAsync(ToDo model);
     Task<bool> UpdateAsync(ToDo model);
 }

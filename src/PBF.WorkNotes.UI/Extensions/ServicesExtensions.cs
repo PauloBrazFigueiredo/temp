@@ -7,6 +7,7 @@ public static class ServicesExtensions
         services.AddTransient<IToDoStatesService, ToDoStatesService>();
         services.AddTransient<IToDosService, ToDosService>();
         services.AddTransient<IPrioritiesService, PrioritiesService>();
+        services.AddTransient<IToDoItemsService, ToDoItemsService>();
         return services;
     }
 }

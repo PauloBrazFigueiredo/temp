@@ -4,23 +4,88 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:v="clr-namespace:PBF.WorkNotes.UI.Views"
+             xmlns:helper="clr-namespace:PBF.WorkNotes.UI.Helpers"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" >
-    <ItemsControl  HorizontalAlignment="Stretch" ItemsSource="{Binding Items}" >
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <WrapPanel Orientation="Horizontal"/>
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <Border Width="200" Height="150" Margin="5" Background="#FFE3E3E3">
-                    <StackPanel>
-                        <!--<Image Source="{Binding ImageUrl}" Height="100" Stretch="UniformToFill"/>-->
-                        <TextBlock Text="{Binding Title}" HorizontalAlignment="Center"/>
-                    </StackPanel>
-                </Border>
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
-    
+    <UserControl.Resources>
+        <helper:NullToVisibilityConverter x:Key="NullToVisibility"/>
+        <helper:StringToSymbolConverter x:Key="StringToSymbol"/>
+        <helper:StringToVisibilityConverter x:Key="StringToVisibility"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Items}">
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        <Setter Property="Focusable" Value="False"/>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border 
+                            Background="{Binding PriorityColor, FallbackValue=Transparent}"
+                            BorderBrush="LightGray" 
+                            BorderThickness="1" 
+                            Padding="10" 
+                            Margin="2"
+                            HorizontalAlignment="Stretch">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseDoubleClick">
+                                    <i:InvokeCommandAction
+                                        Command="{Binding DataContext.DoubleClickCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                    <i:InvokeCommandAction
+                                        Command="{Binding DataContext.ItemClickCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                    <TextBlock Visibility="{Binding StateName, Converter={StaticResource StringToVisibility}}" 
+                                       Text="{Binding StateName, Converter={StaticResource StringToSymbol}}" 
+                                       FontFamily="Segoe UI Symbol" 
+                                       Margin="0,0,10,0"/>
+                                    <TextBlock Text="{Binding Title}" 
+                                       FontWeight="Bold" 
+                                       Margin="0,0,10,0"/>
+                                </StackPanel>
+                                <TextBlock Grid.Column="2" 
+                                   Text="{Binding WorkDate, StringFormat='{}{0:dd/MM/yyyy}'}" 
+                                   TextWrapping="Wrap" 
+                                   Visibility="{Binding WorkDate, Converter={StaticResource NullToVisibility}}" 
+                                   Margin="0,0,0,0" 
+                                   ToolTip="Work Date"/>
+                                <TextBlock Grid.Column="3" 
+                                   Text="{Binding DueDate, StringFormat='{}{0:dd/MM/yyyy}'}" 
+                                   FontWeight="Bold" 
+                                   Foreground="Red" 
+                                   TextWrapping="Wrap" 
+                                   Visibility="{Binding DueDate, Converter={StaticResource NullToVisibility}}" 
+                                   Margin="10,0,0,0" 
+                                   ToolTip="Due Date"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
 </UserControl>

@@ -1,0 +1,11 @@
+﻿global using System.Diagnostics.CodeAnalysis;
+global using AutoMapper;
+global using FluentAssertions;
+global using Microsoft.Extensions.Logging.Abstractions;
+global using Moq;
+global using PBF.WorkNotes.Application.UseCases.Interfaces;
+global using PBF.WorkNotes.UI.Helpers;
+global using PBF.WorkNotes.UI.Models;
+global using PBF.WorkNotes.UI.Services;
+global using PBF.WorkNotes.UI.Services.Interfaces;
+global using Entities = PBF.WorkNotes.Domain.Entities;

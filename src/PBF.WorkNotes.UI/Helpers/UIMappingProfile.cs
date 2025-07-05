@@ -26,5 +26,12 @@ public class UIMappingProfile : Profile
             .ForMember(dest => dest.IsDefault, opt => opt.MapFrom(src => src.IsDefault));
         CreateMap<Entities.ToDo, ToDo>();
         CreateMap<ToDo, Entities.ToDo>();
+        CreateMap<Entities.ToDo, ToDoItem>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+            .ForMember(dest => dest.PriorityColor, opt => opt.MapFrom(src => ColorToBrushConverter.StringToBrush(src.Priority.Color)))
+            .ForMember(dest => dest.StateName, opt => opt.MapFrom(src => src.State.Name))
+            .ForMember(dest => dest.WorkDate, opt => opt.MapFrom(src => src.WorkDate))
+            .ForMember(dest => dest.DueDate, opt => opt.MapFrom(src => src.DueDate));
     }
 }

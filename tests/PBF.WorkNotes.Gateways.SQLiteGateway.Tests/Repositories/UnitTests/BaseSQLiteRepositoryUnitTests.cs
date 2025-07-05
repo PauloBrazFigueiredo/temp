@@ -1,14 +1,15 @@
 ﻿namespace PBF.WorkNotes.Gateways.SQLiteGateway.Tests.Repositories.UnitTests;
 
 [ExcludeFromCodeCoverage]
-public class BaseSQLiteRepositoryUnitTests
+public abstract class BaseSQLiteRepositoryUnitTests
 {
     protected IMapper CreateMapper()
     {
-        var config = new MapperConfiguration(cfg =>
+        var config = new MapperConfiguration(config =>
         {
-            cfg.AddProfile<SQLiteGatewayMappingProfile>();
-        });
+            config.AddProfile<SQLiteGatewayMappingProfile>();
+        },
+        new NullLoggerFactory());
         return config.CreateMapper();
     }
 

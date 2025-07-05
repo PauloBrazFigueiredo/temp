@@ -47,12 +47,13 @@ public class BaseFixture
 
         var assembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == "PBF.WorkNotes.Gateways.SQLiteMigrator");
 
-        var config = new MapperConfiguration(cfg =>
+        var config = new MapperConfiguration(config =>
         {
-            cfg.AllowNullDestinationValues = true;
-            cfg.AllowNullCollections = true;
-            cfg.AddProfile<SQLiteGatewayMappingProfile>();
-        });
+            config.AllowNullDestinationValues = true;
+            config.AllowNullCollections = true;
+            config.AddProfile<SQLiteGatewayMappingProfile>();
+        },
+        new NullLoggerFactory());
 
         return new ServiceCollection()
             .AddFluentMigratorCore()

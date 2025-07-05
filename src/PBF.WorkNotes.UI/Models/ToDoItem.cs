@@ -22,36 +22,14 @@ public class ToDoItem : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    /*
-    private Priority _priority;
-    public Priority Priority
-    {
-        get => _priority;
-        set
-        {
-            _priority = value;
-            OnPropertyChanged();
-        }
-    }
 
-    private ToDoState _state;
-    public ToDoState State
+    private Brush _priorityColor;
+    public Brush PriorityColor
     {
-        get => _state;
+        get => _priorityColor;
         set
         {
-            _state = value;
-            OnPropertyChanged();
-        }
-    }
-
-    private string _notes;
-    public string Notes
-    {
-        get => _notes;
-        set
-        {
-            _notes = value;
+            _priorityColor = value;
             OnPropertyChanged();
         }
     }
@@ -78,17 +56,17 @@ public class ToDoItem : INotifyPropertyChanged
         }
     }
 
-    private DateTime? _createdDate;
-    public DateTime? CreatedDate
+    private string _stateName;
+    public string StateName
     {
-        get => _createdDate;
+        get => _stateName;
         set
         {
-            _createdDate = value;
+            _stateName = value;
             OnPropertyChanged();
         }
     }
-    */
+
     public event PropertyChangedEventHandler PropertyChanged;
 
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

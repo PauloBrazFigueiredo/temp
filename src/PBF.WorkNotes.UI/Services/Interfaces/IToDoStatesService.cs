@@ -2,5 +2,5 @@
 
 public interface IToDoStatesService
 {
-    Task<IEnumerable<ToDoState>> GetAllToDoStatesAsync();
+    IAsyncEnumerable<ToDoState> GetAsync();
 }

@@ -24,3 +24,4 @@ global using PBF.WorkNotes.Gateways.SQLiteGateway.Tests.Stubs;
 global using PBF.WorkNotes.Gateways.SQLiteMigrator.Migrations;
 global using Xunit.Abstractions;
 global using Xunit.Sdk;
+global using Microsoft.Extensions.Logging.Abstractions;

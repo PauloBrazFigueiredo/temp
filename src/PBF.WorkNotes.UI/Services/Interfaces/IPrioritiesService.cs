@@ -2,5 +2,5 @@
 
 public interface IPrioritiesService
 {
-    Task<IEnumerable<Priority>> GetAllPrioritiesAsync();
+    IAsyncEnumerable<Priority> GetAsync();
 }
