@@ -37,7 +37,6 @@ public class ToDosViewModel : ViewModelBase
         set => SetProperty<ObservableCollection<ToDoItem>>(ref _items, value);
     }
 
-
     public ICommand DoubleClickCommand => new RelayCommand<ToDoItem>(ExecuteDoubleClickCommand);
     private void ExecuteDoubleClickCommand(ToDoItem item)
     {

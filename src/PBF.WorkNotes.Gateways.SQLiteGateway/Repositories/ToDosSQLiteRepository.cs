@@ -44,7 +44,7 @@ public class ToDosSQLiteRepository(
             WHERE Id = @Id
         """;
         var parameters = new DynamicParameters();
-        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", id.ToString(), DbType.String, ParameterDirection.Input);
         var model = await databaseAccess.QuerySingleOrDefaultAsync(sql, parameters);
 
         return mapper.Map<ToDo>(model);
@@ -60,11 +60,11 @@ public class ToDosSQLiteRepository(
         model.CreatedDate = DateTime.UtcNow;
         var parameters = new DynamicParameters();
         var id = guidProvider.GetGuid();
-        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", id.ToString(), DbType.String, ParameterDirection.Input);
         parameters.Add("Title", model.Title, DbType.String, ParameterDirection.Input);
         parameters.Add("Notes", model.Notes, DbType.String, ParameterDirection.Input);
-        parameters.Add("StateId", model.StateId, DbType.Guid, ParameterDirection.Input);
-        parameters.Add("PriorityId", model.PriorityId, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("StateId", model.StateId.ToString(), DbType.String, ParameterDirection.Input);
+        parameters.Add("PriorityId", model.PriorityId.ToString(), DbType.String, ParameterDirection.Input);
         parameters.Add("IsPrivate", model.IsPrivate, DbType.Boolean, ParameterDirection.Input);
         parameters.Add("Order", model.Order, DbType.Int32, ParameterDirection.Input);
         parameters.Add("WorkDate", model.WorkDate, DbType.DateTime, ParameterDirection.Input);
@@ -92,11 +92,11 @@ public class ToDosSQLiteRepository(
         """;
         var model = mapper.Map<ToDo>(entity);
         var parameters = new DynamicParameters();
-        parameters.Add("Id", entity.Id, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", entity.Id.ToString(), DbType.String, ParameterDirection.Input);
         parameters.Add("Title", entity.Title, DbType.String, ParameterDirection.Input);
         parameters.Add("Notes", entity.Notes, DbType.String, ParameterDirection.Input);
-        parameters.Add("StateId", entity.StateId, DbType.Guid, ParameterDirection.Input);
-        parameters.Add("PriorityId", entity.PriorityId, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("StateId", entity.StateId.ToString(), DbType.String, ParameterDirection.Input);
+        parameters.Add("PriorityId", entity.PriorityId.ToString(), DbType.String, ParameterDirection.Input);
         parameters.Add("IsPrivate", model.IsPrivate, DbType.Boolean, ParameterDirection.Input);
         parameters.Add("Order", entity.Order, DbType.Int32, ParameterDirection.Input);
         parameters.Add("WorkDate", entity.WorkDate, DbType.DateTime, ParameterDirection.Input);
@@ -114,7 +114,7 @@ public class ToDosSQLiteRepository(
             WHERE Id = @Id
         """;
         var parameters = new DynamicParameters();
-        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", id.ToString(), DbType.String, ParameterDirection.Input);
 
         var result = await databaseAccess.ExecuteAsync(sql, parameters);
         return result == 1;

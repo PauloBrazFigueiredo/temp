@@ -6,7 +6,7 @@ public class Migration_2025040501 : Migration
     public override void Up()
     {
         Create.Table("ToDoStates")
-            .WithColumn("Id").AsGuid().PrimaryKey()
+            .WithColumn("Id").AsString().PrimaryKey()
             .WithColumn("Name").AsString()
             .WithColumn("IsDefault").AsBoolean();
     }

@@ -34,7 +34,7 @@ public  class PrioritiesSQLiteRepository(
             WHERE Id = @Id
         """;
         var parameters = new DynamicParameters();
-        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", id.ToString(), DbType.String, ParameterDirection.Input);
         var model = await databaseAccess.QuerySingleOrDefaultAsync(sql, parameters);
 
         return mapper.Map<Priority>(model);
@@ -49,7 +49,7 @@ public  class PrioritiesSQLiteRepository(
         var model = mapper.Map<PriorityModel>(entity);
         var parameters = new DynamicParameters();
         var id = guidProvider.GetGuid();
-        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", id.ToString(), DbType.String, ParameterDirection.Input);
         parameters.Add("Name", model.Name, DbType.String, ParameterDirection.Input);
         parameters.Add("Level", model.Level, DbType.String, ParameterDirection.Input);
         parameters.Add("Color", model.Color, DbType.String, ParameterDirection.Input);
@@ -71,7 +71,7 @@ public  class PrioritiesSQLiteRepository(
         """;
         var model = mapper.Map<PriorityModel>(entity);
         var parameters = new DynamicParameters();
-        parameters.Add("Id", entity.Id, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", entity.Id.ToString(), DbType.String, ParameterDirection.Input);
         parameters.Add("Name", model.Name, DbType.String, ParameterDirection.Input);
         parameters.Add("Level", model.Level, DbType.String, ParameterDirection.Input);
         parameters.Add("Color", model.Color, DbType.String, ParameterDirection.Input);
@@ -88,7 +88,7 @@ public  class PrioritiesSQLiteRepository(
             WHERE Id = @Id
         """;
         var parameters = new DynamicParameters();
-        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", id.ToString(), DbType.String, ParameterDirection.Input);
 
         var result = await databaseAccess.ExecuteAsync(sql, parameters);
         return result == 1;

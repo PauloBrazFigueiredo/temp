@@ -2,12 +2,12 @@
 
 public class ToDoModel
 {
-    public Guid Id { get; set; }
+    public string Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Notes { get; set; } = string.Empty;
-    public Guid StateId { get; set; }
+    public string StateId { get; set; }
     public IEnumerable<Tag> Tags { get; set; } = new List<Tag>();
-    public Guid PriorityId { get; set; }
+    public string PriorityId { get; set; }
     public int? Order { get; set; }
     public bool IsPrivate { get; set; }
     public DateTime? WorkDate { get; set; }

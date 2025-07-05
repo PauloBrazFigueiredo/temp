@@ -74,7 +74,7 @@ public class ToDoStatesSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             WHERE Id = @Id
         """, 
             It.Is<DynamicParameters>(p =>
-                p.Get<Guid>("Id") == id)),
+                p.Get<string>("Id") == id.ToString())),
             Times.Once);
         result.Should().NotBeNull();
     }
@@ -103,7 +103,7 @@ public class ToDoStatesSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             WHERE Id = @Id
         """,
             It.Is<DynamicParameters>(p =>
-                p.Get<Guid>("Id") == id)),
+                p.Get<string>("Id") == id.ToString())),
             Times.Once);
         result.Should().BeNull();
     }
@@ -156,7 +156,7 @@ public class ToDoStatesSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             WHERE Id = @Id
         """,
             It.Is<DynamicParameters>(p =>
-                p.Get<Guid>("Id") == entity.Id
+                p.Get<string>("Id") == entity.Id.ToString()
                 &&  p.Get<bool>("IsDefault") == entity.IsDefault
                 && p.Get<string>("Name") == entity.Name)),
             Times.Once);
@@ -186,7 +186,7 @@ public class ToDoStatesSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             WHERE Id = @Id
         """,
             It.Is<DynamicParameters>(p =>
-                p.Get<Guid>("Id") == entity.Id
+                p.Get<string>("Id") == entity.Id.ToString()
                 && p.Get<bool>("IsDefault") == entity.IsDefault
                 && p.Get<string>("Name") == entity.Name)),
             Times.Once);
@@ -213,7 +213,7 @@ public class ToDoStatesSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             WHERE Id = @Id
         """,
         It.Is<DynamicParameters>(p =>
-                p.Get<Guid>("Id") == id)),
+                p.Get<string>("Id") == id.ToString())),
         Times.Once);
         result.Should().BeTrue();
     }
@@ -238,7 +238,7 @@ public class ToDoStatesSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             WHERE Id = @Id
         """,
         It.Is<DynamicParameters>(p =>
-                p.Get<Guid>("Id") == id)),
+                p.Get<string>("Id") == id.ToString())),
         Times.Once);
         result.Should().BeFalse();
     }

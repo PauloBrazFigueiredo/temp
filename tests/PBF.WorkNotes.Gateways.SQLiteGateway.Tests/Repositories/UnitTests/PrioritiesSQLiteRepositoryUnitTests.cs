@@ -78,7 +78,7 @@ public class PrioritiesSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             WHERE Id = @Id
         """, 
             It.Is<DynamicParameters>(p =>
-                p.Get<Guid>("Id") ==id)),
+                p.Get<string>("Id") ==id.ToString())),
             Times.Once);
         result.Should().NotBeNull();
     }
@@ -109,7 +109,7 @@ public class PrioritiesSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             WHERE Id = @Id
         """,
             It.Is<DynamicParameters>(p =>
-                p.Get<Guid>("Id") == id)),
+                p.Get<string>("Id") == id.ToString())),
             Times.Once);
         result.Should().BeNull();
     }
@@ -165,7 +165,7 @@ public class PrioritiesSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             WHERE Id = @Id
         """,
             It.Is<DynamicParameters>(p =>
-                p.Get<Guid>("Id") == entity.Id
+                p.Get<string>("Id") == entity.Id.ToString()
                 && p.Get<string>("Name") == entity.Name
                 && p.Get<string>("Level") == entity.Level
                 && p.Get<string>("Color") == entity.Color
@@ -199,7 +199,7 @@ public class PrioritiesSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             WHERE Id = @Id
         """,
             It.Is<DynamicParameters>(p =>
-                p.Get<Guid>("Id") == entity.Id
+                p.Get<string>("Id") == entity.Id.ToString()
                 && p.Get<string>("Name") == entity.Name
                 && p.Get<string>("Level") == entity.Level
                 && p.Get<string>("Color") == entity.Color
@@ -228,7 +228,7 @@ public class PrioritiesSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             WHERE Id = @Id
         """,
         It.Is<DynamicParameters>(p =>
-                p.Get<Guid>("Id") == id)),
+                p.Get<string>("Id") == id.ToString())),
         Times.Once);
         result.Should().BeTrue();
     }
@@ -253,7 +253,7 @@ public class PrioritiesSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             WHERE Id = @Id
         """,
         It.Is<DynamicParameters>(p =>
-                p.Get<Guid>("Id") == id)),
+                p.Get<string>("Id") == id.ToString())),
         Times.Once);
         result.Should().BeFalse();
     }

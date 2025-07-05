@@ -24,7 +24,7 @@ public class ToDosSQLiteRepositoryIntegrationTests :  IClassFixture<ToDosSQLiteR
         {
             Title = "testTitle",
             Notes = "testNotes",
-            StateId = this._states.First().Id,
+            StateId = _states.First().Id,
             State = new ToDoState
             {
                 Id = this._states.First().Id,

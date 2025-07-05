@@ -5,8 +5,8 @@ public class Migration_2025040502 : Migration
 {
     public override void Up()
     {
-        Insert.IntoTable("ToDoStates").Row(new { Id = Guid.NewGuid(), Name = "Active", IsDefault = true});
-        Insert.IntoTable("ToDoStates").Row(new { Id = Guid.NewGuid(), Name = "Done", IsDefault = false });
+        Insert.IntoTable("ToDoStates").Row(new { Id = Guid.NewGuid().ToString(), Name = "Active", IsDefault = true});
+        Insert.IntoTable("ToDoStates").Row(new { Id = Guid.NewGuid().ToString(), Name = "Done", IsDefault = false });
     }
 
     public override void Down()

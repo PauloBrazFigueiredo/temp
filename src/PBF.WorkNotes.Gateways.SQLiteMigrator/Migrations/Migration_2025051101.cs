@@ -6,7 +6,7 @@ public class Migration_2025051101 : Migration
     public override void Up()
     {
         Create.Table("Priorities")
-            .WithColumn("Id").AsGuid().PrimaryKey()
+            .WithColumn("Id").AsString().PrimaryKey()
             .WithColumn("Name").AsString()
             .WithColumn("Level").AsString()
             .WithColumn("Color").AsString()

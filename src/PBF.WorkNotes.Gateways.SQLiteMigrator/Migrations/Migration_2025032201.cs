@@ -6,7 +6,7 @@ public class Migration_2025032201 : Migration
     public override void Up()
     {
         Create.Table("Tags")
-            .WithColumn("Id").AsGuid().PrimaryKey()
+            .WithColumn("Id").AsString().PrimaryKey()
             .WithColumn("Name").AsString()
             .WithColumn("IsPermanent").AsBoolean();
     }

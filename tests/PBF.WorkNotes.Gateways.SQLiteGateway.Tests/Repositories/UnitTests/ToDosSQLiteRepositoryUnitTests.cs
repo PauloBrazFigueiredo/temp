@@ -90,7 +90,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             WHERE Id = @Id
         """, 
             It.Is<DynamicParameters>(p =>
-                p.Get<Guid>("Id") ==id)),
+                p.Get<string>("Id") ==id.ToString())),
             Times.Once);
         result.Should().NotBeNull();
     }
@@ -126,7 +126,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             WHERE Id = @Id
         """,
             It.Is<DynamicParameters>(p =>
-                p.Get<Guid>("Id") == id)),
+                p.Get<string>("Id") == id.ToString())),
             Times.Once);
         result.Should().BeNull();
     }
@@ -175,12 +175,11 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             INSERT INTO ToDos ("Id", "Title", "Notes", "StateId", "PriorityId", "IsPrivate", "Order", "WorkDate", "DueDate", "CreatedDate")
             VALUES (@Id, @Title, @Notes, @StateId, @PriorityId, @IsPrivate, @Order, @WorkDate, @DueDate, @CreatedDate)
         """)),
-        //It.IsAny<DynamicParameters >()
         It.Is<DynamicParameters>(p =>
                 p.Get<string>("Title") == entity.Title
                 && p.Get<string>("Notes") == entity.Notes
-                && p.Get<Guid>("StateId") == entity.StateId
-                && p.Get<Guid>("PriorityId") == entity.PriorityId
+                && p.Get<string>("StateId") == entity.StateId.ToString()
+                && p.Get<string>("PriorityId") == entity.PriorityId.ToString()
                 && p.Get<bool>("IsPrivate") == entity.IsPrivate
                 && p.Get<int>("Order") == entity.Order
                 && p.Get<DateTime>("WorkDate") == entity.WorkDate
@@ -245,11 +244,11 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             WHERE Id = @Id
         """,
             It.Is<DynamicParameters>(p =>
-                p.Get<Guid>("Id") == entity.Id
+                p.Get<string>("Id") == entity.Id.ToString()
                 && p.Get<string>("Title") == entity.Title
                 && p.Get<string>("Notes") == entity.Notes
-                && p.Get<Guid>("StateId") == entity.StateId
-                && p.Get<Guid>("PriorityId") == entity.PriorityId
+                && p.Get<string>("StateId") == entity.StateId.ToString()
+                && p.Get<string>("PriorityId") == entity.PriorityId.ToString()
                 && p.Get<bool>("IsPrivate") == entity.IsPrivate
                 && p.Get<int>("Order") == entity.Order
                 && p.Get<DateTime>("WorkDate") == entity.WorkDate
@@ -316,11 +315,11 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             WHERE Id = @Id
         """,
             It.Is<DynamicParameters>(p =>
-                p.Get<Guid>("Id") == entity.Id
+                p.Get<string>("Id") == entity.Id.ToString()
                 && p.Get<string>("Title") == entity.Title
                 && p.Get<string>("Notes") == entity.Notes
-                && p.Get<Guid>("StateId") == entity.StateId
-                && p.Get<Guid>("PriorityId") == entity.PriorityId
+                && p.Get<string>("StateId") == entity.StateId.ToString()
+                && p.Get<string>("PriorityId") == entity.PriorityId.ToString()
                 && p.Get<bool>("IsPrivate") == entity.IsPrivate
                 && p.Get<int>("Order") == entity.Order
                 && p.Get<DateTime>("WorkDate") == entity.WorkDate
@@ -350,7 +349,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             WHERE Id = @Id
         """,
         It.Is<DynamicParameters>(p =>
-                p.Get<Guid>("Id") == id)),
+                p.Get<string>("Id") == id.ToString())),
         Times.Once);
         result.Should().BeTrue();
     }
@@ -375,7 +374,7 @@ public class ToDosSQLiteRepositoryUnitTests : BaseSQLiteRepositoryUnitTests
             WHERE Id = @Id
         """,
         It.Is<DynamicParameters>(p =>
-                p.Get<Guid>("Id") == id)),
+                p.Get<string>("Id") == id.ToString())),
         Times.Once);
         result.Should().BeFalse();
     }

@@ -30,9 +30,9 @@ public  class ToDoStatesSQLiteRepository(
             WHERE Id = @Id
         """;
         var parameters = new DynamicParameters();
-        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
-        var model = await databaseAccess.QuerySingleOrDefaultAsync(sql, parameters);
+        parameters.Add("Id", id.ToString(), DbType.String, ParameterDirection.Input);
 
+        var model = await databaseAccess.QuerySingleOrDefaultAsync(sql, parameters);
         return mapper.Map<ToDoState>(model);
     }
 
@@ -45,7 +45,7 @@ public  class ToDoStatesSQLiteRepository(
         var model = mapper.Map<ToDoStateModel>(entity);
         var parameters = new DynamicParameters();
         var id = guidProvider.GetGuid();
-        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", id.ToString(), DbType.String, ParameterDirection.Input);
         parameters.Add("Name", model.Name, DbType.String, ParameterDirection.Input);
         parameters.Add("IsDefault", model.IsDefault, DbType.Boolean, ParameterDirection.Input);
 
@@ -61,9 +61,9 @@ public  class ToDoStatesSQLiteRepository(
                 IsDefault = @IsDefault
             WHERE Id = @Id
         """;
-        var model = mapper.Map<ToDoState>(entity);
+        var model = mapper.Map<ToDoStateModel>(entity);
         var parameters = new DynamicParameters();
-        parameters.Add("Id", entity.Id, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", model.Id, DbType.String, ParameterDirection.Input);
         parameters.Add("Name", model.Name, DbType.String, ParameterDirection.Input);
         parameters.Add("IsDefault", model.IsDefault, DbType.Boolean, ParameterDirection.Input);
 
@@ -78,7 +78,7 @@ public  class ToDoStatesSQLiteRepository(
             WHERE Id = @Id
         """;
         var parameters = new DynamicParameters();
-        parameters.Add("Id", id, DbType.Guid, ParameterDirection.Input);
+        parameters.Add("Id", id.ToString(), DbType.String, ParameterDirection.Input);
 
         var result = await databaseAccess.ExecuteAsync(sql, parameters);
         return result == 1;
